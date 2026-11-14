@@ -33,6 +33,8 @@ Kemas kini kod melalui **Manage deployments → Edit → New version** supaya pa
 |---|---|
 | `apps-script/Code.gs` | Pelayan: daftar, log masuk, simpan kemajuan, data papan pemuka |
 | `apps-script/Index.html` | Laman murid dan papan pemuka guru |
+| `apps-script/appsscript.json` | Manifest projek: zon waktu, dan web app dibuka oleh sesiapa tanpa log masuk |
+| `.github/workflows/deploy-gas.yml` | GitHub Action yang menghantar kod ke Apps Script secara automatik |
 
 ## Cara memasang
 
@@ -56,6 +58,69 @@ Tampal fail baharu, kemudian pilih **Deploy → Manage deployments → Edit (iko
 ### Terlupa PIN guru
 
 Dalam Apps Script, pilih fungsi **resetPinGuru** dan klik **Run**. Kemudian buka laman dan cipta PIN guru baharu.
+
+## Penyegerakan automatik (clasp + GitHub Actions)
+
+Setiap kali fail dalam folder `apps-script/` diubah di cawangan `main`, GitHub Action **Hantar ke Google Apps Script** akan:
+
+1. menghantar kod ke projek Apps Script (`clasp push`), dan
+2. mengemas kini web app yang sedia ada dengan versi baharu (`clasp deploy`), jadi **pautan laman kekal sama**.
+
+Mulai sekarang, ubah kod **di GitHub sahaja**. Perubahan yang dibuat terus dalam editor Apps Script akan ditimpa pada penghantaran seterusnya.
+
+### Persediaan (sekali sahaja)
+
+**Langkah 1: Hidupkan Apps Script API**
+
+Buka https://script.google.com/home/usersettings dengan Gmail yang memiliki projek, kemudian hidupkan **Google Apps Script API**.
+
+**Langkah 2: Dapatkan Script ID**
+
+Dalam editor Apps Script, klik **Project Settings** (ikon gear), kemudian salin **Script ID** di bahagian *IDs*.
+
+**Langkah 3: Dapatkan kelayakan clasp (`.clasprc.json`)**
+
+Langkah ini boleh dibuat terus dalam pelayar menggunakan GitHub Codespaces, tanpa memasang apa-apa di komputer.
+
+1. Di halaman repo ini, klik **Code → Codespaces → Create codespace on main**.
+2. Dalam terminal di bahagian bawah, jalankan:
+   ```
+   npx @google/clasp@2.4.2 login --no-localhost
+   ```
+3. Buka pautan yang dipaparkan, log masuk dengan Gmail yang memiliki projek Apps Script, kemudian klik **Allow**.
+4. Google akan memaparkan satu kod. Salin kod itu, tampal ke terminal, kemudian tekan Enter.
+5. Paparkan kelayakan dengan:
+   ```
+   cat ~/.clasprc.json
+   ```
+   Salin **seluruh** teks yang dipaparkan, bermula dengan `{` dan berakhir dengan `}`.
+6. Padam codespace selepas siap, melalui **github.com/codespaces → ⋯ → Delete**.
+
+**Langkah 4: Simpan sebagai rahsia repo**
+
+Di repo ini, pergi ke **Settings → Secrets and variables → Actions → New repository secret**, kemudian tambah:
+
+| Name | Secret |
+|---|---|
+| `CLASPRC_JSON` | seluruh isi `.clasprc.json` dari Langkah 3 |
+| `SCRIPT_ID` | Script ID dari Langkah 2 |
+
+**Langkah 5: Uji**
+
+Pergi ke tab **Actions → Hantar ke Google Apps Script → Run workflow**. Tanda hijau ✓ bermakna laman sudah dikemas kini.
+
+### Jika berlaku masalah
+
+| Mesej dalam Actions | Penyelesaian |
+|---|---|
+| `Rahsia CLASPRC_JSON belum ditambah` | Ulang Langkah 4. |
+| `User has not enabled the Apps Script API` | Ulang Langkah 1, tunggu beberapa minit, kemudian jalankan semula. |
+| `invalid_grant` atau `unauthorized` | Kelayakan telah tamat atau dibatalkan. Ulang Langkah 3 dan gantikan rahsia `CLASPRC_JSON`. |
+| `Requested entity was not found` | Semak `SCRIPT_ID`, atau `DEPLOYMENT_ID` dalam `.github/workflows/deploy-gas.yml`. |
+
+**Jika pautan web app berubah**, kemas kini `DEPLOYMENT_ID` dalam `.github/workflows/deploy-gas.yml`. Nilainya ialah bahagian di antara `/s/` dan `/exec` dalam pautan.
+
+**Keselamatan:** `CLASPRC_JSON` memberi akses kepada projek Apps Script dalam Gmail tersebut. Simpan hanya sebagai *secret*. Jangan tampal dalam fail, issue atau mesej.
 
 ## Privasi
 

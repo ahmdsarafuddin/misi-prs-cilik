@@ -1,0 +1,4 @@
+# Kelayakan clasp: jangan sekali-kali simpan dalam repo
+.clasprc.json
+.clasp.json
+node_modules/

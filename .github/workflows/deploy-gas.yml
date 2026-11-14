@@ -1,0 +1,66 @@
+name: Hantar ke Google Apps Script
+
+# Berjalan setiap kali fail dalam apps-script/ berubah di cawangan main,
+# atau secara manual dari tab Actions (butang "Run workflow").
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-script/**"
+      - ".github/workflows/deploy-gas.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-gas
+  cancel-in-progress: false
+
+env:
+  # ID deployment web app yang sedang digunakan murid (bahagian di antara /s/ dan /exec dalam pautan).
+  # Mengemas kini deployment ini mengekalkan pautan laman yang sama.
+  DEPLOYMENT_ID: AKfycbyvucbM7cuhWkD6TkSHZNyCoLKbaYGvhE4wUYBPJoE5hmzZtNKzRoE0gM-1KSxmbUpKTA
+  CLASP_VERSION: 2.4.2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ambil kod
+        uses: actions/checkout@v4
+
+      - name: Sediakan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Pasang clasp
+        run: npm install -g @google/clasp@${CLASP_VERSION}
+
+      - name: Semak rahsia
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+          SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+        run: |
+          if [ -z "$CLASPRC_JSON" ]; then echo "::error::Rahsia CLASPRC_JSON belum ditambah. Lihat README, bahagian 'Penyegerakan automatik'."; exit 1; fi
+          if [ -z "$SCRIPT_ID" ]; then echo "::error::Rahsia SCRIPT_ID belum ditambah. Lihat README, bahagian 'Penyegerakan automatik'."; exit 1; fi
+          echo "$CLASPRC_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); assert 'token' in d" \
+            || { echo "::error::CLASPRC_JSON bukan isi fail .clasprc.json yang sah."; exit 1; }
+
+      - name: Tulis kelayakan clasp
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+          SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+        run: |
+          printf '%s' "$CLASPRC_JSON" > "$HOME/.clasprc.json"
+          printf '{"scriptId":"%s","rootDir":"apps-script"}\n' "$SCRIPT_ID" > .clasp.json
+
+      - name: Hantar kod ke Apps Script (clasp push)
+        run: clasp push --force
+
+      - name: Kemas kini web app (pautan kekal sama)
+        run: |
+          DESC="$(git log -1 --pretty=%s | cut -c1-90) (${GITHUB_SHA::7})"
+          clasp deploy --deploymentId "$DEPLOYMENT_ID" --description "$DESC"
+
+      - name: Padam kelayakan
+        if: always()
+        run: rm -f "$HOME/.clasprc.json" .clasp.json
