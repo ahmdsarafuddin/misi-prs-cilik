@@ -1,0 +1,48 @@
+name: Terbitkan ke GitHub Pages
+
+# Menerbitkan laman murid di https://ahmdsarafuddin.github.io/misi-prs-cilik/
+# Rekod murid tetap disimpan dalam Google Sheet melalui web app Apps Script.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-script/Index.html"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Ambil kod
+        uses: actions/checkout@v4
+
+      - name: Sediakan fail laman
+        run: |
+          mkdir -p _site
+          cp apps-script/Index.html _site/index.html
+          touch _site/.nojekyll
+
+      - name: Sediakan Pages
+        uses: actions/configure-pages@v5
+
+      - name: Muat naik laman
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Terbitkan
+        id: deployment
+        uses: actions/deploy-pages@v4

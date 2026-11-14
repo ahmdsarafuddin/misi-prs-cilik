@@ -4,9 +4,13 @@ Laman pembelajaran interaktif untuk murid **Pembimbing Rakan Sebaya (PRS)** seko
 
 ## Pautan laman
 
-https://script.google.com/macros/s/AKfycbyvucbM7cuhWkD6TkSHZNyCoLKbaYGvhE4wUYBPJoE5hmzZtNKzRoE0gM-1KSxmbUpKTA/exec
+**Untuk murid (disyorkan):** https://ahmdsarafuddin.github.io/misi-prs-cilik/
 
-Kemas kini kod melalui **Manage deployments → Edit → New version** supaya pautan ini kekal sama.
+Pautan ini dihoskan di GitHub Pages, tanpa jalur "created by a Google Apps Script user". Laman ini menghantar dan membaca rekod melalui web app Apps Script di bawah, jadi semua data tetap dalam Google Sheet guru.
+
+**Web app Apps Script (sandaran dan API):** https://script.google.com/macros/s/AKfycbyvucbM7cuhWkD6TkSHZNyCoLKbaYGvhE4wUYBPJoE5hmzZtNKzRoE0gM-1KSxmbUpKTA/exec
+
+Kedua-dua pautan berkongsi rekod yang sama. Jika pautan web app berubah, kemas kini `API_URL` dalam `apps-script/Index.html` dan `DEPLOYMENT_ID` dalam `.github/workflows/deploy-gas.yml`.
 
 ## Kandungan
 
@@ -35,6 +39,11 @@ Kemas kini kod melalui **Manage deployments → Edit → New version** supaya pa
 | `apps-script/Index.html` | Laman murid dan papan pemuka guru |
 | `apps-script/appsscript.json` | Manifest projek: zon waktu, dan web app dibuka oleh sesiapa tanpa log masuk |
 | `.github/workflows/deploy-gas.yml` | GitHub Action yang menghantar kod ke Apps Script secara automatik |
+| `.github/workflows/pages.yml` | GitHub Action yang menerbitkan laman murid ke GitHub Pages |
+
+### Hidupkan GitHub Pages (sekali sahaja)
+
+Di repo ini, pergi ke **Settings → Pages**. Di bahagian *Build and deployment → Source*, pilih **GitHub Actions**. Kemudian jalankan **Actions → Terbitkan ke GitHub Pages → Run workflow**.
 
 ## Cara memasang
 

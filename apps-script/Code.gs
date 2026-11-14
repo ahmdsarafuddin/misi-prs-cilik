@@ -36,10 +36,40 @@ var BADGE_NAMES = {
 
 /* ---------- laman ---------- */
 
-function doGet() {
+function doGet(e) {
+  if (e && e.parameter && e.parameter.ping) {
+    return json_({ ok: { versi: VERSI, masa: Date.now() } });
+  }
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Misi PRS Cilik')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+/* ---------- API untuk laman di GitHub Pages ---------- */
+
+var VERSI = '1.2';
+
+// Hanya fungsi dalam senarai ini boleh dipanggil dari luar.
+var API_DIBENARKAN = {
+  apiKelas: apiKelas, apiNama: apiNama, apiDaftar: apiDaftar, apiMasuk: apiMasuk, apiSimpan: apiSimpan,
+  apiGuruStatus: apiGuruStatus, apiGuruCipta: apiGuruCipta, apiGuruData: apiGuruData,
+  apiGuruResetPin: apiGuruResetPin, apiGuruPadam: apiGuruPadam
+};
+
+function doPost(e) {
+  try {
+    var body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    var fn = API_DIBENARKAN.hasOwnProperty(body.fn) ? API_DIBENARKAN[body.fn] : null;
+    if (!fn) return json_({ err: 'Permintaan tidak dikenali.' });
+    var args = Array.isArray(body.args) ? body.args.slice(0, 5) : [];
+    return json_({ ok: fn.apply(null, args) });
+  } catch (err) {
+    return json_({ err: String((err && err.message) || err) });
+  }
+}
+
+function json_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
 /* ---------- persediaan ---------- */
