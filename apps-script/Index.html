@@ -239,6 +239,21 @@ details.mod summary::-webkit-details-marker{display:none}
 .btnrow .ghost{border:2px solid var(--line);background:transparent;border-radius:14px;padding:8px 18px;font-weight:800}
 
 /* badges */
+/* kandungan dikunci */
+.soon{display:flex;gap:14px;align-items:flex-start;background:var(--plum-soft);border:2px dashed color-mix(in srgb,var(--plum) 45%,transparent);border-radius:20px;padding:14px 16px;margin-bottom:14px}
+.soon svg,.lockico svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--plum);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.soon strong{font-family:var(--display);font-size:19px;display:block;line-height:1.2}
+.soon p{font-size:15px;margin-top:2px}
+.pill-soon{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--plum);background:var(--plum-soft);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill-soon svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+details.mod.locked{opacity:.75;border-style:dashed}
+details.mod.locked summary{cursor:not-allowed}
+details.mod.locked h3{color:var(--muted)}
+.gamepick .locked{border-style:dashed;opacity:.8;cursor:not-allowed}
+.gamepick .locked strong{color:var(--muted)}
+.badge.soonb{border-style:dashed;cursor:default}
+.badge.soonb:hover{transform:none}
+
 /* koleksi lencana */
 .bhead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between;margin-top:16px}
 .bhead h2{font-size:clamp(26px,4vw,32px)}
@@ -299,7 +314,7 @@ details.mod summary::-webkit-details-marker{display:none}
 .reset{margin-top:20px;border:2px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:6px 14px;font-weight:700;font-size:14px}
 .note{font-size:14px;color:var(--muted);margin-top:12px}
 
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140px);background:var(--ink);color:var(--bg);
+.toast{pointer-events:none;position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140px);background:var(--ink);color:var(--bg);
   padding:10px 20px;border-radius:999px;font-weight:800;transition:transform .35s;z-index:20;max-width:calc(100% - 32px);text-align:center}
 .toast.show{transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -436,7 +451,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
     <p class="info" id="demoNote" hidden>Mod cubaan: laman ini belum disambungkan ke Google Sheet, jadi kemajuan tidak disimpan.
       <button class="primary" id="demoBtn" type="button" style="margin-top:8px;width:100%">Cuba tanpa log masuk</button></p>
     <button class="linkbtn" id="toGuru" type="button">Saya guru: buka papan pemuka</button>
-    <p class="ver">Versi 1.4 · 15 Nov 2026</p>
+    <p class="ver">Versi 1.5 · 15 Nov 2026</p>
   </div>
 </div>
 
@@ -464,7 +479,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
   <div class="hero">
     <div>
       <h2>Jadilah <span>Pembimbing Rakan Sebaya</span> yang hebat!</h2>
-      <p>Mulakan dengan Modul 1 tentang buli dan Akta Antibuli 2026. Kemudian baca modul lain, kumpul XP dan uji diri dalam permainan.</p>
+      <p>Mulakan dengan Modul 1 tentang buli dan Akta Antibuli 2026. Kumpul XP, uji diri dalam permainan dan buka semua lencana Modul 1.</p>
     </div>
     <canvas class="art" width="400" height="300" aria-hidden="true"></canvas>
   </div>
@@ -673,6 +688,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
   </article>
 
   <h3 class="sect">Modul seterusnya</h3>
+  <div class="soon" id="soonMods"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><strong>Modul 2 hingga 5 sedang ditambah baik</strong><p>Guru PRS sedang menyediakan kandungan dan permainan baharu. Sementara menunggu, kumpul semua 6 lencana Modul 1!</p></div></div>
   <div class="mods">
     <details class="mod c1" data-mod="2"><summary><span class="tag">Modul 2</span><h3>Siapa PRS?</h3><span class="done" hidden>Selesai</span></summary>
       <div class="body">
@@ -734,7 +750,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
 <section id="main" hidden>
   <h3 class="ghead"><span class="tag">Modul 1</span>Uji kefahaman antibuli</h3>
   <div class="gamepick" id="pick1"></div>
-  <h3 class="ghead"><span class="tag o">Modul 2–5</span>Kemahiran PRS</h3>
+  <h3 class="ghead"><span class="tag o">Modul 2–5</span>Kemahiran PRS <span class="pill-soon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Sedang ditambah baik</span></h3>
   <div class="gamepick" id="pick2"></div>
   <div class="stage" id="stage" aria-live="polite"></div>
 </section>
@@ -889,7 +905,7 @@ function render(){
   $("#bar").style.width=(nxt===cur?100:((S.xp-cur)/(nxt-cur)*100))+"%";
   $$(".mod").forEach(m=>{const d=S.mods.includes(m.dataset.mod);m.querySelector(".done").hidden=!d;const b=m.querySelector(".read");b.disabled=d;b.textContent=d?"Sudah dibaca":"Saya faham (+20 XP)"});
   $("#m1done").hidden=!S.mods.includes("1");
-  renderBadges();renderPicks();
+  applyLocks();renderBadges();renderPicks();
 }
 function addXP(n){const before=lvl();S.xp+=n;save();render();if(lvl()>before)toast("Naik tahap! Kamu kini "+LEVELS[lvl()][1]);if(S.xp>=560)badge("bintang")}
 function badge(id,opt){if(!S.badges.includes(id)){S.badges.push(id);save();renderBadges();celebrate(id,Object.assign({fresh:true},opt||{}))}}
@@ -944,6 +960,9 @@ $$(".mod .read").forEach(btn=>btn.onclick=()=>{
 });
 
 /* lencana */
+/* Modul yang belum dibuka kepada murid. Kosongkan senarai ini untuk membuka semula. */
+const MODUL_KUNCI=["2","3","4","5"];
+const LOCKSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const BADGES=[
   {id:"perisai",grp:1,name:"Perisai Antibuli",desc:"Tamatkan pelajaran Modul 1",c:"--navy",ic:"shield",how:"Kamu menamatkan semua 8 langkah Modul 1."},
   {id:"detektif",grp:1,name:"Detektif Buli",desc:"Skor 7/8 atau lebih dalam Buli atau Bukan?",c:"--coral",ic:"search",g:"bukan",how:"Kamu bijak membezakan buli dan bukan buli."},
@@ -955,7 +974,7 @@ const BADGES=[
   {id:"kuiz",grp:2,name:"Otak Kilat",desc:"Skor 6/8 atau lebih dalam Kuiz Kilat",c:"--sun",ic:"bolt",g:"kuiz",how:"Kamu pantas menjawab soalan tentang PRS."},
   {id:"bantu",grp:2,name:"Penjaga Selamat",desc:"Semua betul dalam Bantu atau Rujuk",c:"--coral",ic:"heart",g:"bantu",how:"Kamu tahu bila perlu merujuk kepada guru."},
   {id:"dengar",grp:2,name:"Telinga Emas",desc:"Skor 7/8 atau lebih dalam Pendengar Hebat",c:"--plum",ic:"chat",g:"dengar",how:"Kamu pendengar yang hebat."},
-  {id:"bintang",grp:2,name:"PRS Bintang",desc:"Capai 560 XP",c:"--navy",ic:"star",how:"Kamu mengumpul 560 XP. Kamu PRS Bintang!"}
+  {id:"bintang",grp:3,name:"PRS Bintang",desc:"Capai 560 XP",c:"--navy",ic:"star",how:"Kamu mengumpul 560 XP. Kamu PRS Bintang!"}
 ];
 const ICONS={
   shield:'<path d="M12 2.5l7.5 3v5.8c0 4.7-3.2 8.6-7.5 10.2-4.3-1.6-7.5-5.5-7.5-10.2V5.5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
@@ -985,17 +1004,29 @@ function medal(b,on){
     <g transform="translate(36 36) scale(2)" style="fill:none;stroke:${ink};stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">${ic}</g>
   </svg>`;
 }
+const g2Locked=()=>MODUL_KUNCI.length>0;
+const badgeLocked=b=>b.grp===2&&g2Locked()&&!S.badges.includes(b.id);
 function renderBadges(){
-  const got=BADGES.filter(b=>S.badges.includes(b.id)).length;
-  $("#bCount").textContent=got+" / "+BADGES.length+" lencana";
-  $("#bBar").style.width=(got/BADGES.length*100)+"%";
-  const grp=(g,title)=>{const list=BADGES.filter(b=>b.grp===g),n=list.filter(b=>S.badges.includes(b.id)).length;
-    return `<div class="bgroup"><h3>${title} <small>${n}/${list.length}</small></h3><div class="badges" style="--n:${list.length}">${list.map(b=>{const on=S.badges.includes(b.id);
-      return `<button class="badge ${on?"on":""}" data-b="${b.id}" aria-label="${b.name}${on?", dibuka":", belum dibuka"}">${medal(b,on)}<strong>${b.name}</strong>
-        ${on?`<span class="got">Dibuka ✓</span>`:`<span>${b.desc}</span>${b.g?`<span class="try">Cuba sekarang →</span>`:""}`}</button>`}).join("")}</div></div>`};
-  $("#badges").innerHTML=grp(1,"Misi Modul 1: Antibuli")+grp(2,"Kemahiran PRS");
+  const avail=BADGES.filter(b=>!badgeLocked(b)),got=avail.filter(b=>S.badges.includes(b.id)).length;
+  $("#bCount").textContent=got+" / "+avail.length+" lencana";
+  $("#bBar").style.width=(avail.length?got/avail.length*100:0)+"%";
+  const grp=(g,title)=>{const list=BADGES.filter(b=>b.grp===g);if(!list.length)return "";const n=list.filter(b=>S.badges.includes(b.id)).length,soon=list.every(badgeLocked);
+    return `<div class="bgroup"><h3>${title} ${soon?`<span class="pill-soon">${LOCKSVG}Sedang ditambah baik</span>`:`<small>${n}/${list.length}</small>`}</h3><div class="badges" style="--n:${Math.max(list.length,3)}">${list.map(b=>{const on=S.badges.includes(b.id),lk=badgeLocked(b);
+      return `<button class="badge ${on?"on":""} ${lk?"soonb":""}" data-b="${b.id}" aria-label="${b.name}${on?", dibuka":lk?", akan datang":", belum dibuka"}">${medal(b,on)}<strong>${b.name}</strong>
+        ${on?`<span class="got">Dibuka ✓</span>`:lk?`<span>Akan datang</span>`:`<span>${b.desc}</span>${b.g?`<span class="try">Cuba sekarang →</span>`:""}`}</button>`}).join("")}</div></div>`};
+  $("#badges").innerHTML=grp(1,"Misi Modul 1: Antibuli")+grp(3,"Lencana istimewa")+grp(2,"Kemahiran PRS");
   $$("#badges .badge").forEach(el=>el.onclick=()=>{const b=BADGES.find(x=>x.id===el.dataset.b);
-    if(S.badges.includes(b.id))celebrate(b.id,{replay:true});else if(b.g)goGame(b.g);else if(b.id==="perisai")goLesson();else if(b.id==="ilmu")goLesson(".mods")});
+    if(S.badges.includes(b.id))celebrate(b.id,{replay:true});else if(badgeLocked(b))toast("Modul 2 hingga 5 sedang ditambah baik. Nantikan!");else if(b.g)goGame(b.g);else if(b.id==="perisai")goLesson();else if(b.id==="ilmu")goLesson(".mods")});
+}
+function applyLocks(){
+  $("#soonMods").hidden=!MODUL_KUNCI.length;
+  $$(".mod").forEach(m=>{const lk=MODUL_KUNCI.includes(m.dataset.mod);m.classList.toggle("locked",lk);
+    let pill=m.querySelector(".pill-soon");
+    if(lk&&!pill){pill=document.createElement("span");pill.className="pill-soon";pill.innerHTML=LOCKSVG+"Akan datang";m.querySelector("summary").appendChild(pill)}
+    if(pill)pill.hidden=!lk;if(lk)m.open=false;
+    const sm=m.querySelector("summary");sm.onclick=e=>{if(m.classList.contains("locked")){e.preventDefault();toast("Modul "+m.dataset.mod+" sedang ditambah baik. Nantikan!")}};
+    if(lk)sm.setAttribute("aria-disabled","true");else sm.removeAttribute("aria-disabled");
+  });
 }
 function goTab(t){$$("nav.tabs button").forEach(x=>x.setAttribute("aria-selected",x.dataset.tab===t));["belajar","main","lencana"].forEach(id=>$("#"+id).hidden=id!==t);window.scrollTo({top:0})}
 function goGame(g){goTab("main");start(g);setTimeout(()=>$("#stage").scrollIntoView({block:"start"}),50)}
@@ -1170,11 +1201,12 @@ function renderPicks(){
   let num=0;
   [1,2].forEach(g=>{
     $("#pick"+g).innerHTML=Object.entries(GAMES).filter(([,v])=>v.grp===g).map(([k,v],i)=>{num++;
-      const tot=TOT[k];
+      const tot=TOT[k],lk=v.grp===2&&g2Locked();
+      if(lk)return `<button class="locked" data-locked="1" aria-disabled="true"><em>Permainan ${num}</em><strong>${v.name}</strong><span>${v.desc}</span><span class="pill-soon">${LOCKSVG}Akan datang</span></button>`;
       const best=S.best[k]!=null?`<span class="best">Terbaik: ${S.best[k]}/${tot}</span>`:"";
       return `<button data-game="${k}" aria-pressed="${k===activeGame}"><em>Permainan ${num}</em><strong>${v.name}</strong><span>${v.desc}</span>${best}</button>`}).join("");
   });
-  $$(".gamepick button").forEach(b=>b.onclick=()=>start(b.dataset.game));
+  $$(".gamepick button").forEach(b=>b.onclick=()=>b.dataset.locked?toast("Permainan ini sedang ditambah baik. Nantikan!"):start(b.dataset.game));
 }
 function start(type){
   activeGame=type;renderPicks();
