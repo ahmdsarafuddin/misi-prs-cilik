@@ -1,0 +1,34 @@
+name: Semak sambungan API
+
+# Ujian ringkas: adakah web app Apps Script menjawab permintaan dari luar (seperti laman GitHub Pages)?
+# Log repo awam boleh dilihat umum, jadi ujian ini hanya mencetak bilangan, bukan nama.
+on:
+  workflow_dispatch:
+
+jobs:
+  semak:
+    runs-on: ubuntu-latest
+    env:
+      API_URL: https://script.google.com/macros/s/AKfycbyvucbM7cuhWkD6TkSHZNyCoLKbaYGvhE4wUYBPJoE5hmzZtNKzRoE0gM-1KSxmbUpKTA/exec
+    steps:
+      - name: Ping (GET)
+        run: |
+          code=$(curl -sS -L -o ping.txt -w '%{http_code} %{content_type}' "$API_URL?ping=1")
+          echo "HTTP: $code"
+          head -c 200 ping.txt; echo
+      - name: Senarai kelas (POST, seperti laman GitHub Pages)
+        run: |
+          code=$(curl -sS -L -o kelas.txt -w '%{http_code} %{content_type}' \
+            -H 'Content-Type: text/plain;charset=utf-8' \
+            --data '{"fn":"apiKelas","args":[]}' "$API_URL")
+          echo "HTTP: $code"
+          python3 - <<'PY'
+          import json
+          t=open('kelas.txt').read()
+          try:
+              d=json.loads(t)
+          except Exception:
+              print("BUKAN JSON. Permulaan jawapan:", t[:300].replace('\n',' ')); raise SystemExit(1)
+          if 'err' in d: print("RALAT DARI PELAYAN:", d['err']); raise SystemExit(1)
+          print("OK. Bilangan kelas dalam Google Sheet:", len(d.get('ok') or []))
+          PY
