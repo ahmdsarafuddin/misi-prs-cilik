@@ -2,6 +2,12 @@
 
 Laman pembelajaran interaktif untuk murid **Pembimbing Rakan Sebaya (PRS)** sekolah rendah, Tahap 2. Murid belajar tentang buli dan **Akta Antibuli 2026 (Akta 876)**, mengumpul XP, membuka lencana, dan menguji kefahaman melalui permainan. Guru boleh melihat kemajuan setiap murid melalui papan pemuka.
 
+## Pautan laman
+
+https://script.google.com/macros/s/AKfycbyvucbM7cuhWkD6TkSHZNyCoLKbaYGvhE4wUYBPJoE5hmzZtNKzRoE0gM-1KSxmbUpKTA/exec
+
+Kemas kini kod melalui **Manage deployments → Edit → New version** supaya pautan ini kekal sama.
+
 ## Kandungan
 
 | Modul | Topik |
