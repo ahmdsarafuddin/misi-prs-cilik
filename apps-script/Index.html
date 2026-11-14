@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misi PRS Cilik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: papan misi — bar XP di atas, tab Belajar / Permainan / Lencana; Modul 1 ialah pelajaran berlangkah, modul lain kad lipat */
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --ink:#173a3a; --muted:#56706f; --line:#d5e3e1;
+  --teal:#0f8b84; --teal-soft:#d8f1ee; --sun:#f5b922; --sun-soft:#fff1c9;
+  --coral:#e8604c; --coral-soft:#fde3de; --plum:#7a4fb3; --plum-soft:#ece2f8;
+  --navy:#1d4e89; --navy-soft:#dde8f6;
+  --ok:#1f9d55; --bad:#d64545; --onaccent:#ffffff;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1b1c; --surface:#172728; --ink:#e3f1ef; --muted:#9cb7b4; --line:#284040;
+  --teal:#2fb1a7; --teal-soft:#16393a; --sun:#f7c64a; --sun-soft:#3a3218;
+  --coral:#e0705e; --coral-soft:#40221e; --plum:#a57fd9; --plum-soft:#2e2340;
+  --navy:#7fb0ec; --navy-soft:#1b2c42;
+  --ok:#4cc982; --bad:#f07070; --onaccent:#0f1b1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1b1c; --surface:#172728; --ink:#e3f1ef; --muted:#9cb7b4; --line:#284040;
+  --teal:#2fb1a7; --teal-soft:#16393a; --sun:#f7c64a; --sun-soft:#3a3218;
+  --coral:#e0705e; --coral-soft:#40221e; --plum:#a57fd9; --plum-soft:#2e2340;
+  --navy:#7fb0ec; --navy-soft:#1b2c42;
+  --ok:#4cc982; --bad:#f07070; --onaccent:#0f1b1c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.muted{color:var(--muted)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:2px solid var(--line);
+  margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:12px max(16px,env(safe-area-inset-left,0px))}
+.top .wrap{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--teal);display:grid;place-items:center;color:var(--onaccent);font-family:var(--display);font-weight:800;font-size:15px}
+.brand h1{font-size:22px}
+.brand small{display:block;font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-weight:800}
+.xp{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 240px;max-width:380px}
+.lvl{font-family:var(--display);font-weight:800;background:var(--sun-soft);border-radius:999px;padding:2px 12px;white-space:nowrap;font-size:15px}
+.bar{flex:1;height:14px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--sun));width:0;transition:width .5s}
+.xpnum{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;white-space:nowrap}
+
+nav.tabs{display:flex;gap:8px;margin:20px 0 8px;flex-wrap:wrap}
+nav.tabs button{border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 18px;font-weight:800}
+nav.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:var(--onaccent)}
+
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;margin:16px 0 24px}
+.hero h2{font-size:clamp(30px,5vw,44px)}
+.hero h2 span{color:var(--teal)}
+.hero p{color:var(--muted);margin-top:10px;max-width:58ch}
+.hero canvas{width:100%;max-width:100%;aspect-ratio:4/3;background:var(--teal-soft);border-radius:24px}
+@media (max-width:700px){.hero{grid-template-columns:1fr}.hero canvas{max-height:220px}}
+
+.def{background:var(--sun-soft);border-radius:20px;padding:18px 20px;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap;align-items:baseline}
+.def b{font-family:var(--display);font-size:22px}
+.def p{flex:1 1 300px;min-width:0}
+
+/* ===== Modul 1 lesson ===== */
+.m1{background:var(--surface);border:3px solid var(--navy);border-radius:28px;overflow:hidden;margin-bottom:28px}
+.m1-head{background:var(--navy);color:var(--onaccent);padding:18px 22px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.m1-head h3{font-size:clamp(22px,3.6vw,28px)}
+.m1-head small{display:block;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.m1-head .src{font-size:13px;opacity:.9;max-width:36ch}
+.dots{display:flex;gap:6px;flex-wrap:wrap;padding:16px 22px 0}
+.dots button{border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:800;color:var(--muted)}
+.dots button.seen{border-color:var(--navy);color:var(--navy)}
+.dots button[aria-current="step"]{background:var(--navy);border-color:var(--navy);color:var(--onaccent)}
+.step{padding:18px 22px 6px;display:grid;gap:16px}
+.step>h4{font-size:clamp(22px,3.4vw,28px)}
+.step .lead{max-width:62ch}
+.law{border-left:5px solid var(--navy);background:var(--navy-soft);border-radius:0 14px 14px 0;padding:12px 16px;font-size:15px}
+.law b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy)}
+.m1-nav{display:flex;justify-content:space-between;gap:10px;padding:16px 22px 22px;flex-wrap:wrap}
+.m1-nav button{border-radius:14px;padding:10px 20px;font-weight:800;border:2px solid var(--line);background:var(--surface)}
+.m1-nav .go{background:var(--navy);border-color:var(--navy);color:var(--onaccent)}
+.m1-nav .finish{background:var(--coral);border-color:var(--coral);color:var(--onaccent)}
+.m1-nav button[disabled]{opacity:.45;cursor:default}
+
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:760px){.keys{grid-template-columns:repeat(2,1fr)}}
+.key{border:2px dashed var(--navy);background:var(--bg);border-radius:18px;padding:14px;text-align:left;display:grid;gap:4px;min-height:132px;align-content:start}
+.key .n{font-family:var(--display);font-weight:800;font-size:28px;color:var(--navy);line-height:1}
+.key strong{font-family:var(--display);font-size:18px}
+.key span{font-size:14px}
+.key .hid{color:var(--muted);font-weight:700}
+.key.open{border-style:solid;background:var(--navy-soft)}
+
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.flip{border:2px solid var(--line);border-radius:18px;padding:14px;text-align:left;display:grid;gap:6px;min-height:150px;align-content:start;background:var(--surface)}
+.flip .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:800;color:var(--onaccent);font-size:18px}
+.flip strong{font-family:var(--display);font-size:20px}
+.flip span{font-size:14px}
+.flip .tap{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.flip[aria-pressed="true"]{background:var(--bg)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.vs{grid-template-columns:1fr}}
+.vs div{border-radius:18px;padding:14px 16px}
+.vs h5{font-family:var(--display);font-size:20px;margin:0 0 6px}
+.vs ul{margin:0;padding-left:20px;display:grid;gap:4px;font-size:15px}
+.vs .g{background:var(--teal-soft)} .vs .b{background:var(--coral-soft)}
+
+.check{border:2px solid var(--sun);background:var(--sun-soft);border-radius:18px;padding:14px 16px;display:grid;gap:10px}
+.check small{font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.check .row{display:flex;flex-wrap:wrap;gap:8px}
+.check .row button{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 14px;font-weight:700;text-align:left}
+.check .row button.right{border-color:var(--ok)} .check .row button.wrong{border-color:var(--bad)}
+.check .say{font-size:15px}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:700px){.facts{grid-template-columns:1fr}}
+.fact{background:var(--bg);border-radius:16px;padding:12px 14px;display:grid;gap:2px}
+.fact b{font-family:var(--display);font-size:22px;color:var(--navy);font-variant-numeric:tabular-nums}
+.fact span{font-size:14px}
+.duty{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (max-width:560px){.duty{grid-template-columns:1fr}}
+.duty div{border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:15px}
+.duty strong{display:block;font-family:var(--display);font-size:18px}
+
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:p}
+@media (max-width:760px){.path{grid-template-columns:1fr}}
+.path div{position:relative;background:var(--navy-soft);padding:14px 16px 14px 16px;font-size:15px;border-right:3px solid var(--surface)}
+.path div:first-child{border-radius:16px 0 0 16px}.path div:last-child{border-radius:0 16px 16px 0;border-right:0}
+@media (max-width:760px){.path div{border-right:0;border-bottom:3px solid var(--surface);border-radius:0!important}
+ .path div:first-child{border-radius:16px 16px 0 0!important}.path div:last-child{border-radius:0 0 16px 16px!important;border-bottom:0}}
+.path strong{display:block;font-family:var(--display);font-size:18px}
+.path em{font-style:normal;font-size:12px;font-weight:800;color:var(--navy);letter-spacing:.05em;text-transform:uppercase}
+.orders{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.orders div{border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:15px}
+.orders strong{display:block}
+.pen{background:var(--coral-soft);border-radius:16px;padding:12px 16px;font-size:15px;display:grid;gap:6px}
+.pen strong{font-family:var(--display);font-size:18px}
+
+.prs4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:760px){.prs4{grid-template-columns:repeat(2,1fr)}}
+.prs4 div{background:var(--teal-soft);border-radius:16px;padding:12px 14px;font-size:14px;display:grid;gap:4px;align-content:start}
+.prs4 b{font-family:var(--display);font-size:26px;color:var(--teal);line-height:1}
+.prs4 strong{font-family:var(--display);font-size:17px;line-height:1.2}
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.dodont{grid-template-columns:1fr}}
+.dodont div{border-radius:16px;padding:12px 16px;font-size:15px}
+.dodont h5{font-family:var(--display);font-size:18px;margin:0 0 4px}
+.dodont ul{margin:0;padding-left:20px;display:grid;gap:3px}
+.dodont .y{background:var(--teal-soft)} .dodont .n{background:var(--coral-soft)}
+.help{background:var(--plum-soft);border-radius:16px;padding:12px 16px;font-size:15px}
+.help strong{font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.heart{display:grid;gap:8px}
+.heart label{font-family:var(--display);font-size:19px}
+.heart textarea{width:100%;min-height:72px;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;background:var(--bg);color:var(--ink);resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:2px solid var(--plum);background:var(--surface);color:var(--plum);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700}
+
+/* other modules */
+.sect{font-size:24px;margin:8px 0 12px}
+.mods{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:700px){.mods{grid-template-columns:1fr}}
+details.mod{background:var(--surface);border:2px solid var(--line);border-radius:20px;overflow:hidden}
+details.mod summary{list-style:none;padding:16px 18px;display:flex;gap:14px;align-items:center;cursor:pointer}
+details.mod summary::-webkit-details-marker{display:none}
+.tag{font-family:var(--display);font-weight:800;font-size:13px;border-radius:10px;padding:4px 10px;white-space:nowrap}
+.mod h3{font-size:21px;flex:1}
+.done{font-size:12px;font-weight:800;color:var(--ok);white-space:nowrap}
+.mod .body{padding:0 18px 18px;display:grid;gap:12px}
+.mod ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.mod .tip{border-radius:14px;padding:12px 14px;font-size:15px}
+.read{justify-self:start;border:0;border-radius:12px;padding:8px 16px;font-weight:800;background:var(--teal);color:var(--onaccent)}
+.read[disabled]{background:var(--line);color:var(--muted);cursor:default}
+.c1 .tag,.c1 .tip{background:var(--teal-soft)} .c2 .tag,.c2 .tip{background:var(--sun-soft)}
+.c3 .tag,.c3 .tip{background:var(--coral-soft)} .c4 .tag,.c4 .tip{background:var(--plum-soft)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.steps div{background:var(--bg);border-radius:12px;padding:10px;text-align:center;font-size:14px}
+.steps b{display:block;font-family:var(--display);font-size:20px;color:var(--plum)}
+@media (max-width:440px){.steps{grid-template-columns:repeat(2,1fr)}}
+
+/* games */
+.ghead{font-size:20px;margin:18px 0 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ghead .tag{background:var(--navy-soft);color:var(--navy)}
+.ghead .tag.o{background:var(--teal-soft);color:var(--teal)}
+.gamepick{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gamepick button{text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:20px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.gamepick button[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.gamepick strong{font-family:var(--display);font-size:19px}
+.gamepick span{color:var(--muted);font-size:14px}
+.gamepick em{font-style:normal;font-size:12px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.05em}
+.gamepick .best{font-size:12px;font-weight:800;color:var(--ok)}
+.stage{background:var(--surface);border:2px solid var(--line);border-radius:24px;padding:22px;display:grid;gap:16px;margin-top:18px}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:800;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.q{font-family:var(--display);font-size:clamp(20px,3.4vw,26px);font-weight:600}
+.opts{display:grid;gap:10px}
+.opts button,.big button{border:2px solid var(--line);background:var(--bg);border-radius:16px;padding:12px 16px;text-align:left;font-weight:600}
+.opts button:hover:not([disabled]),.big button:hover:not([disabled]){border-color:var(--teal)}
+.opts button.right,.big button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,var(--surface))}
+.opts button.wrong,.big button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 13%,var(--surface))}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.big button{text-align:center;font-family:var(--display);font-size:18px;font-weight:800;padding:14px 10px}
+.feedback{border-radius:14px;padding:12px 14px;background:var(--bg);font-size:15px}
+.feedback b{color:var(--ok)} .feedback b.no{color:var(--bad)}
+.next{justify-self:end;border:0;border-radius:14px;padding:10px 22px;font-weight:800;background:var(--coral);color:var(--onaccent)}
+.end{text-align:center;display:grid;gap:12px;justify-items:center;padding:12px 0}
+.end .score{font-family:var(--display);font-size:52px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums}
+.stars{font-size:34px;letter-spacing:6px;color:var(--sun)}
+.scene{background:var(--plum-soft);border-radius:16px;padding:14px 16px;font-size:16px}
+.scene small{display:block;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--plum)}
+.pool,.seq{display:grid;gap:8px}
+.pool button{border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 14px;text-align:left;font-weight:700}
+.pool button[disabled]{opacity:.35}
+.seq{counter-reset:s;min-height:48px;border:2px dashed var(--line);border-radius:16px;padding:10px}
+.seq div{counter-increment:s;display:flex;gap:10px;align-items:center;background:var(--navy-soft);border-radius:12px;padding:8px 12px;font-weight:700}
+.seq div::before{content:counter(s);font-family:var(--display);font-weight:800;background:var(--navy);color:var(--onaccent);border-radius:8px;min-width:28px;text-align:center}
+.seq div.right{background:color-mix(in srgb,var(--ok) 18%,var(--surface))}
+.seq div.wrong{background:color-mix(in srgb,var(--bad) 15%,var(--surface))}
+.seq .empty{color:var(--muted);font-size:14px;align-self:center}
+.btnrow{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btnrow .ghost{border:2px solid var(--line);background:transparent;border-radius:14px;padding:8px 18px;font-weight:800}
+
+/* badges */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}
+.badge{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:8px;justify-items:center;text-align:center;align-content:start}
+.badge svg{width:64px;height:64px}
+.badge.locked{opacity:.5;filter:grayscale(1)}
+.badge strong{font-family:var(--display);font-size:18px}
+.badge span{font-size:13px;color:var(--muted)}
+.reset{margin-top:20px;border:2px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:6px 14px;font-weight:700;font-size:14px}
+.note{font-size:14px;color:var(--muted);margin-top:12px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140px);background:var(--ink);color:var(--bg);
+  padding:10px 20px;border-radius:999px;font-weight:800;transition:transform .35s;z-index:20;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== log masuk / daftar ===== */
+.gate{max-width:980px;margin:0 auto;padding-block:28px 40px;display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:start}
+@media (max-width:760px){.gate{grid-template-columns:1fr}}
+.gate-intro h2{font-size:clamp(32px,6vw,52px)}
+.gate-intro h2 span{color:var(--teal)}
+.gate-intro p{color:var(--muted);margin-top:12px;max-width:52ch}
+.gate-intro canvas{width:100%;max-width:420px;aspect-ratio:4/3;background:var(--teal-soft);border-radius:24px;margin-top:20px}
+@media (max-width:760px){.gate-intro canvas{display:none}}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:24px;padding:22px;display:grid;gap:14px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:14px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:8px;font-weight:800;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.field{display:grid;gap:4px}
+.field label{font-weight:800;font-size:14px}
+.field input,.field select{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink)}
+.field input:focus,.field select:focus{outline:3px solid var(--sun);outline-offset:1px}
+.field .hint{font-size:13px;color:var(--muted)}
+.pin{letter-spacing:.5em;font-variant-numeric:tabular-nums;font-size:20px!important}
+.primary{border:0;border-radius:14px;padding:12px 18px;font-weight:800;background:var(--teal);color:var(--onaccent);font-size:17px}
+.primary[disabled]{opacity:.55;cursor:default}
+.err{color:var(--bad);font-weight:700;font-size:15px}
+.err:empty{display:none}
+.info{background:var(--sun-soft);border-radius:12px;padding:10px 12px;font-size:14px}
+.linkbtn{border:0;background:none;color:var(--muted);font-weight:700;text-decoration:underline;justify-self:center;font-size:14px}
+
+/* header akaun */
+.who{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.who b{font-family:var(--display);font-size:17px}
+.who small{color:var(--muted);font-weight:700}
+.who .st{font-size:12px;font-weight:800;color:var(--muted)}
+.who .st.bad{color:var(--bad)}
+.out{border:2px solid var(--line);background:transparent;border-radius:10px;padding:4px 12px;font-weight:800;font-size:14px}
+
+/* ===== papan pemuka guru ===== */
+.guru{max-width:1180px;margin:0 auto;padding-block:20px 40px;display:grid;gap:18px}
+.guru-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.guru-top h2{font-size:clamp(26px,4vw,34px)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;gap:2px}
+.tile b{font-family:var(--display);font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tile span{font-size:13px;color:var(--muted);font-weight:700}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.tools .field{min-width:150px;flex:1 1 150px}
+.tools .ghostbtn{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 14px;font-weight:800}
+.tablewrap{overflow-x:auto;background:var(--surface);border:2px solid var(--line);border-radius:18px}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg);position:sticky;top:0}
+th.grp{text-align:center;color:var(--navy)}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
+.mdots{display:flex;gap:3px}
+.mdots i{width:16px;height:16px;border-radius:5px;background:var(--line);display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:800;color:var(--muted)}
+.mdots i.on{background:var(--teal);color:var(--onaccent)}
+.sc{display:inline-block;min-width:44px;border-radius:8px;padding:1px 6px;font-weight:800}
+.sc.hi{background:color-mix(in srgb,var(--ok) 20%,var(--surface))}
+.sc.mid{background:var(--sun-soft)}
+.sc.lo{background:var(--coral-soft)}
+.sc.no{color:var(--muted);font-weight:600}
+.pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;background:var(--bg)}
+.pill.warn{background:var(--coral-soft)}
+.empty-state{padding:28px;text-align:center;color:var(--muted)}
+.detail{background:var(--surface);border:3px solid var(--navy);border-radius:22px;padding:20px;display:grid;gap:14px}
+.detail-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:start}
+.detail h3{font-size:26px}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.dgrid div{background:var(--bg);border-radius:14px;padding:10px 12px;font-size:14px}
+.dgrid b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.quote{background:var(--plum-soft);border-radius:14px;padding:12px 14px;font-size:15px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions button{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 14px;font-weight:800}
+.actions button.danger{border-color:var(--bad);color:var(--bad)}
+.actions button.danger.armed{background:var(--bad);color:var(--onaccent)}
+.sheetlink{font-size:14px;font-weight:700;color:var(--navy)}
+
+</style>
+</head>
+<body>
+
+<!-- ============ LOG MASUK ============ -->
+<div id="gate" class="gate">
+  <div class="gate-intro">
+    <h2>Selamat datang ke <span>Misi PRS Cilik</span></h2>
+    <p>Belajar menjadi Pembimbing Rakan Sebaya yang hebat, kenali buli dan Akta Antibuli 2026, kumpul XP dan buka lencana. Log masuk supaya kemajuan kamu disimpan.</p>
+    <canvas class="art" width="400" height="300" aria-hidden="true"></canvas>
+  </div>
+
+  <div class="card" id="gateCard">
+    <div class="seg" role="group" aria-label="Pilih">
+      <button id="segMasuk" aria-pressed="true">Log masuk</button>
+      <button id="segDaftar" aria-pressed="false">Daftar baharu</button>
+    </div>
+
+    <form id="fMasuk" class="card" style="border:0;padding:0" autocomplete="off">
+      <div class="field"><label for="mKelas">Kelas</label>
+        <select id="mKelas"><option value="">Memuatkan senarai kelas…</option></select></div>
+      <div class="field"><label for="mNama">Nama</label>
+        <select id="mNama" disabled><option value="">Pilih kelas dahulu</option></select></div>
+      <div class="field" id="pinLama"><label for="mPin">PIN 4 digit</label>
+        <input id="mPin" class="pin" type="password" inputmode="numeric" maxlength="4" pattern="\d{4}" autocomplete="off"></div>
+      <div id="pinBaru" hidden>
+        <p class="info">Kali pertama log masuk? Cipta PIN 4 digit kamu sendiri. Ingat PIN ini dan jangan beritahu sesiapa.</p>
+        <div class="field"><label for="mPinBaru">PIN baharu</label>
+          <input id="mPinBaru" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+        <div class="field"><label for="mPinBaru2">Taip semula PIN</label>
+          <input id="mPinBaru2" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+      </div>
+      <p class="err" id="mErr"></p>
+      <button class="primary" id="mBtn" type="submit">Masuk</button>
+    </form>
+
+    <form id="fDaftar" class="card" style="border:0;padding:0" hidden autocomplete="off">
+      <div class="field"><label for="dNama">Nama penuh</label>
+        <input id="dNama" maxlength="60" autocomplete="off" placeholder="Contoh: Nur Aisyah binti Ahmad"></div>
+      <div class="field"><label for="dKelas">Kelas</label>
+        <input id="dKelas" maxlength="20" list="kelasList" autocomplete="off" placeholder="Contoh: 5 BESTARI">
+        <datalist id="kelasList"></datalist>
+        <span class="hint">Pilih daripada senarai jika kelas kamu sudah ada.</span></div>
+      <div class="field"><label for="dPin">Cipta PIN 4 digit</label>
+        <input id="dPin" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+      <div class="field"><label for="dPin2">Taip semula PIN</label>
+        <input id="dPin2" class="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></div>
+      <p class="err" id="dErr"></p>
+      <button class="primary" id="dBtn" type="submit">Daftar dan mula</button>
+    </form>
+
+    <p class="info" id="demoNote" hidden>Mod cubaan: laman ini belum disambungkan ke Google Sheet, jadi kemajuan tidak disimpan.
+      <button class="primary" id="demoBtn" type="button" style="margin-top:8px;width:100%">Cuba tanpa log masuk</button></p>
+    <button class="linkbtn" id="toGuru" type="button">Saya guru: buka papan pemuka</button>
+  </div>
+</div>
+
+<!-- ============ APLIKASI MURID ============ -->
+<div id="app" hidden>
+<header class="top"><div class="wrap">
+  <div class="brand"><div class="logo">PRS</div><div class="who"><div><small id="whoKelas">Kelas</small><br><b id="whoNama">Murid</b></div></div></div>
+  <div class="xp" aria-label="Mata pengalaman">
+    <span class="lvl" id="lvl">Tahap 1</span>
+    <div class="bar"><i id="bar"></i></div>
+    <span class="xpnum" id="xpnum">0 XP</span>
+  </div>
+  <div class="who"><span class="st" id="saveSt" aria-live="polite"></span><button class="out" id="logout">Log keluar</button></div>
+</div></header>
+
+<main class="wrap">
+<nav class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="belajar">Belajar</button>
+  <button role="tab" aria-selected="false" data-tab="main">Permainan</button>
+  <button role="tab" aria-selected="false" data-tab="lencana">Lencana</button>
+</nav>
+
+<!-- ============ BELAJAR ============ -->
+<section id="belajar">
+  <div class="hero">
+    <div>
+      <h2>Jadilah <span>Pembimbing Rakan Sebaya</span> yang hebat!</h2>
+      <p>Mulakan dengan Modul 1 tentang buli dan Akta Antibuli 2026. Kemudian baca modul lain, kumpul XP dan uji diri dalam permainan.</p>
+    </div>
+    <canvas class="art" width="400" height="300" aria-hidden="true"></canvas>
+  </div>
+
+  <div class="def"><b>PRS ialah…</b><p>murid yang dilatih oleh guru bimbingan dan kaunseling untuk <strong>mendengar, membantu dan memberi sokongan</strong> kepada kawan-kawan di sekolah. PRS bukan polis kelas dan bukan pengganti guru. PRS ialah kawan yang boleh dipercayai.</p></div>
+
+  <!-- MODUL 1 -->
+  <article class="m1" id="m1">
+    <div class="m1-head">
+      <div><small>Modul 1 · Program SAFE</small><h3>Kenali Buli &amp; Akta Antibuli 2026</h3></div>
+      <p class="src">Berdasarkan Akta Antibuli 2026 (Akta 876) dan Modul PRS Kerangka Antibuli Sekolah. <span class="done" id="m1done" hidden style="color:var(--sun)">· Selesai</span></p>
+    </div>
+    <div class="dots" id="dots"></div>
+
+    <!-- step 1 -->
+    <section class="step" data-step="Apa itu buli?">
+      <h4>Apa itu buli?</h4>
+      <p class="lead">Undang-undang Malaysia kini ada maksud rasmi bagi buli. Sesuatu perbuatan dikira buli jika ada <strong>empat kunci</strong> ini. Tekan setiap kunci untuk membukanya.</p>
+      <div class="keys">
+        <button class="key" data-k="Disengajakan" data-t="Dibuat dengan sengaja, bukan tidak sengaja atau terlanggar."><span class="n">1</span><strong>Kunci 1</strong><span class="hid">Tekan untuk buka</span></button>
+        <button class="key" data-k="Ditujukan kepada mangsa" data-t="Dibuat kepada seseorang dengan apa-apa cara: tangan, kata-kata, atau telefon."><span class="n">2</span><strong>Kunci 2</strong><span class="hid">Tekan untuk buka</span></button>
+        <button class="key" data-k="Berulang atau serius" data-t="Berlaku berkali-kali, ATAU sekali sahaja tetapi sangat serius."><span class="n">3</span><strong>Kunci 3</strong><span class="hid">Tekan untuk buka</span></button>
+        <button class="key" data-k="Menyebabkan kemudaratan" data-t="Mangsa cedera badan, sakit hati dan takut (psikologi), atau dipulaukan (sosial)."><span class="n">4</span><strong>Kunci 4</strong><span class="hid">Tekan untuk buka</span></button>
+      </div>
+      <div class="law"><b>Seksyen 3(1) Akta 876</b>Buli ialah perbuatan yang disengajakan dan ditujukan kepada mangsa dengan apa-apa cara, sama ada berulang atau satu kejadian serius, yang menyebabkan kemudaratan fizikal, psikologi atau sosial kepada mangsa.</div>
+      <div class="check" data-ans="1">
+        <small>Semak faham</small>
+        <p>Adakah buli mesti berlaku berkali-kali?</p>
+        <div class="row"><button data-o="0">Ya, mesti berulang</button><button data-o="1">Tidak, sekali pun boleh jika serius</button></div>
+        <p class="say" hidden data-ok="Tepat! Satu kejadian yang serius juga dikira buli." data-no="Belum tepat. Akta menyebut buli boleh berlaku sekali sahaja jika kejadian itu serius."></p>
+      </div>
+    </section>
+
+    <!-- step 2 -->
+    <section class="step" data-step="Jenis buli" hidden>
+      <h4>Lima jenis buli</h4>
+      <p class="lead">Akta 876 menyenaraikan bentuk-bentuk buli. Tekan setiap kad untuk melihat contoh.</p>
+      <div class="flips">
+        <button class="flip" aria-pressed="false" data-ex="Memukul, menolak, menendang, atau merosakkan dan menyembunyikan barang kawan."><span class="ico" style="background:var(--coral)">F</span><strong>Fizikal</strong><span>Mencederakan badan mangsa atau barang kepunyaannya.</span><span class="tap">Tekan untuk contoh</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Mengejek nama, mengutuk rupa, mengugut: &quot;Kalau tak bagi duit, siap kau!&quot;"><span class="ico" style="background:var(--sun);color:#173a3a">L</span><strong>Lisan</strong><span>Kata-kata yang menghina, mengugut atau memalukan.</span><span class="tap">Tekan untuk contoh</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Melarang kawan lain berkawan dengan seseorang, atau menyebar cerita bohong supaya dia dibenci."><span class="ico" style="background:var(--plum)">S</span><strong>Sosial</strong><span>Memulaukan mangsa atau merosakkan nama baiknya.</span><span class="tap">Tekan untuk contoh</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Mengejek kawan kerana kaum, agama, jantina, atau kerana dia kurang upaya."><span class="ico" style="background:var(--teal)">D</span><strong>Diskriminasi</strong><span>Memalukan mangsa kerana jantina, kaum, agama atau ketidakupayaan.</span><span class="tap">Tekan untuk contoh</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Menghantar mesej kejam, menyebar gambar kawan tanpa izin, atau mengejek dalam permainan dalam talian."><span class="ico" style="background:var(--navy)">B</span><strong>Buli siber</strong><span>Lisan, sosial atau diskriminasi yang dibuat melalui telefon, internet atau media sosial.</span><span class="tap">Tekan untuk contoh</span></button>
+      </div>
+      <div class="law"><b>Seksyen 3(2) Akta 876</b>Perenggan (a) hingga (e) menerangkan buli fizikal, bahasa yang menghina atau mengugut, pengasingan sosial, diskriminasi, dan perbuatan itu apabila dilakukan melalui komunikasi elektronik atau digital.</div>
+    </section>
+
+    <!-- step 3 -->
+    <section class="step" data-step="Gurauan atau buli?" hidden>
+      <h4>Gurauan atau buli?</h4>
+      <p class="lead">Ramai pembuli berkata "saya bergurau sahaja". Cara mudah membezakannya:</p>
+      <div class="vs">
+        <div class="g"><h5>Gurauan</h5><ul><li>Semua orang ketawa bersama</li><li>Berhenti apabila kawan kata "cukup"</li><li>Tiada sesiapa yang sakit, takut atau malu</li><li>Kedua-dua pihak sama-sama selesa</li></ul></div>
+        <div class="b"><h5>Buli</h5><ul><li>Hanya pembuli yang ketawa</li><li>Diteruskan walaupun mangsa minta berhenti</li><li>Mangsa sakit, takut, malu atau tidak mahu ke sekolah</li><li>Pembuli rasa lebih kuat atau berkuasa</li></ul></div>
+      </div>
+      <div class="check" data-ans="0">
+        <small>Semak faham</small>
+        <p>Amin mengejek Kamal "gigi arnab" setiap hari. Kamal sudah minta berhenti tetapi Amin terus ketawa. Ini…</p>
+        <div class="row"><button data-o="0">Buli</button><button data-o="1">Gurauan biasa</button></div>
+        <p class="say" hidden data-ok="Betul! Ia disengajakan, berulang, dan Kamal sudah minta berhenti." data-no="Belum tepat. Kamal sudah minta berhenti dan ia berulang setiap hari, jadi ini buli lisan."></p>
+      </div>
+    </section>
+
+    <!-- step 4 -->
+    <section class="step" data-step="Akta 876" hidden>
+      <h4>Akta Antibuli 2026: undang-undang baharu kita</h4>
+      <p class="lead">Malaysia kini ada undang-undang khas untuk mencegah dan menangani buli. Ini bermakna buli bukan lagi sekadar salah disiplin sekolah, malah boleh membawa tindakan undang-undang.</p>
+      <div class="facts">
+        <div class="fact"><b>Akta 876</b><span>Nombor rasmi undang-undang ini</span></div>
+        <div class="fact"><b>13 Jan 2026</b><span>Mendapat Perkenan Diraja</span></div>
+        <div class="fact"><b>23 Jan 2026</b><span>Disiarkan dalam Warta</span></div>
+      </div>
+      <h4 style="font-size:20px">Siapa yang dilindungi?</h4>
+      <p>Mangsa di bawah Akta ini ialah kanak-kanak di bawah umur <strong>18 tahun</strong>, pelajar di institusi pendidikan, dan kanak-kanak di institusi jagaan. Yang boleh membuat aduan ialah <strong>mangsa sendiri, atau ibu, bapa atau penjaganya</strong>.</p>
+      <h4 style="font-size:20px">Apa yang sekolah wajib sediakan?</h4>
+      <div class="duty">
+        <div><strong>Jawatankuasa antibuli</strong>Untuk mencegah buli dan mengurus aduan.</div>
+        <div><strong>Saluran lapor yang selamat</strong>Mudah digunakan murid, mesra kanak-kanak dan dirahsiakan.</div>
+        <div><strong>Kaunseling dan sokongan</strong>Untuk membantu mangsa dan menguruskan kes.</div>
+        <div><strong>Latihan</strong>Tentang cara mencegah dan mengurus buli, seperti latihan PRS ini.</div>
+      </div>
+      <div class="law"><b>Seksyen 2, 7 dan 8 Akta 876</b>Mentakrifkan mangsa dan pengadu, serta mewajibkan institusi pendidikan menubuhkan jawatankuasa, saluran laporan yang rahsia, perkhidmatan kaunseling dan latihan.</div>
+    </section>
+
+    <!-- step 5 -->
+    <section class="step" data-step="Tribunal & akibat" hidden>
+      <h4>Tribunal Antibuli dan akibat kepada pembuli</h4>
+      <p class="lead">Akta ini menubuhkan <strong>Tribunal bagi Antibuli</strong>, iaitu badan khas yang mendengar aduan buli. Begini laluan sesuatu aduan buli yang berlaku di sekolah:</p>
+      <div class="path">
+        <div><em>Langkah 1</em><strong>Aduan ke sekolah</strong>Mangsa atau ibu bapa mengadu kepada jawatankuasa antibuli sekolah.</div>
+        <div><em>Langkah 2</em><strong>Ke Tribunal</strong>Jika sekolah tidak bertindak dengan wajar, atau sekolah merujuk dengan izin pengadu.</div>
+        <div><em>Langkah 3</em><strong>Pendengaran</strong>Tertutup, mesra kanak-kanak, panel 3 orang termasuk sekurang-kurangnya seorang wanita.</div>
+        <div><em>Langkah 4</em><strong>Award</strong>Keputusan dibuat tanpa lengah, jika boleh dalam 60 hari.</div>
+      </div>
+      <h4 style="font-size:20px">Tribunal boleh memerintahkan pembuli…</h4>
+      <div class="orders">
+        <div><strong>Memohon maaf</strong>kepada mangsa.</div>
+        <div><strong>Memadam kandungan buli</strong>daripada media sosial dan peranti.</div>
+        <div><strong>Membayar balik perbelanjaan</strong>yang ditanggung mangsa.</div>
+        <div><strong>Membayar pampasan</strong>sehingga RM250,000. Jika pembuli kanak-kanak, ibu bapa yang membayar.</div>
+        <div><strong>Menghadiri program</strong>yang ditetapkan oleh Tribunal.</div>
+        <div><strong>Ibu bapa hadir kaunseling</strong>bersama anak yang membuli.</div>
+      </div>
+      <div class="pen"><strong>Jika perintah tidak dipatuhi dalam 30 hari</strong>Itu suatu kesalahan jenayah. Hukumannya boleh termasuk denda dan penjara sehingga 2 tahun.</div>
+      <div class="pen" style="background:var(--navy-soft)"><strong>Identiti kanak-kanak dilindungi</strong>Sesiapa yang menyiarkan maklumat yang boleh mengenal pasti kanak-kanak dalam kes Tribunal boleh didenda sehingga RM50,000 atau penjara sehingga 2 tahun. Jadi, jangan sebarkan nama atau gambar mangsa!</div>
+      <div class="law"><b>Seksyen 25, 29, 35, 37, 42 hingga 44 dan 50 Akta 876</b>Mangsa juga masih boleh membuat laporan polis bagi kesalahan berkaitan buli (seksyen 54).</div>
+      <div class="check" data-ans="2">
+        <small>Semak faham</small>
+        <p>Rizal (11 tahun) diperintah membayar pampasan kerana membuli. Siapa yang membayar?</p>
+        <div class="row"><button data-o="0">Rizal menggunakan duit belanja</button><button data-o="1">Sekolah</button><button data-o="2">Ibu bapa atau penjaga Rizal</button></div>
+        <p class="say" hidden data-ok="Betul! Jika responden kanak-kanak, ibu bapa atau penjaga yang membayar." data-no="Belum tepat. Seksyen 43 menyebut ibu bapa atau penjaga membayar jika pembuli ialah kanak-kanak."></p>
+      </div>
+    </section>
+
+    <!-- step 6 -->
+    <section class="step" data-step="Peranan PRS" hidden>
+      <h4>Peranan PRS apabila berlaku buli</h4>
+      <p class="lead">PRS bukan hakim dan bukan penghukum. Tugas PRS ialah menjadi kawan yang membantu dengan cara yang betul, selamat dan beretika.</p>
+      <div class="prs4">
+        <div><b>1</b><strong>Kenal pasti situasi</strong>Adakah ada empat kunci buli?</div>
+        <div><b>2</b><strong>Beri sokongan awal</strong>Dengar dengan empati, tenangkan mangsa.</div>
+        <div><b>3</b><strong>Laporkan</strong>Kepada guru kaunseling atau jawatankuasa antibuli.</div>
+        <div><b>4</b><strong>Jaga kerahsiaan</strong>Jangan cerita atau sebar kepada orang lain.</div>
+      </div>
+      <div class="dodont">
+        <div class="y"><h5>PRS buat</h5><ul><li>Dengar tanpa menyampuk</li><li>Katakan "Ini bukan salah awak"</li><li>Temani mangsa berjumpa guru</li><li>Simpan bukti seperti tangkap layar, jika selamat</li></ul></div>
+        <div class="n"><h5>PRS jangan buat</h5><ul><li>Bergaduh atau membalas dengan pembuli</li><li>Menyebar gambar atau video buli</li><li>Berjanji simpan rahsia jika mangsa dalam bahaya</li><li>Menyalahkan mangsa</li></ul></div>
+      </div>
+      <div class="help"><strong>Talian Kasih 15999</strong> · Kalau kamu sendiri dibuli, beritahu ibu bapa, guru kelas atau guru kaunseling. Kamu juga boleh menghubungi Talian Kasih.</div>
+      <div class="heart">
+        <label for="suara">Suara hati: tulis satu ayat sokongan kepada mangsa buli</label>
+        <div class="chips">
+          <button data-s="Awak tidak keseorangan. Saya ada untuk awak.">Awak tidak keseorangan…</button>
+          <button data-s="Ini bukan salah awak.">Ini bukan salah awak.</button>
+          <button data-s="Jom kita jumpa cikgu kaunseling bersama-sama.">Jom jumpa cikgu…</button>
+        </div>
+        <textarea id="suara" placeholder="Contoh: Awak berani kerana bercerita kepada saya."></textarea>
+      </div>
+    </section>
+
+    <div class="m1-nav">
+      <button id="prev">Kembali</button>
+      <button id="next" class="go">Seterusnya</button>
+    </div>
+  </article>
+
+  <h3 class="sect">Modul seterusnya</h3>
+  <div class="mods">
+    <details class="mod c1" data-mod="2"><summary><span class="tag">Modul 2</span><h3>Siapa PRS?</h3><span class="done" hidden>Selesai</span></summary>
+      <div class="body">
+        <p>Program PRS bermula di sekolah Malaysia sejak tahun 1980-an. Murid PRS dipilih kerana mereka suka menolong, bukan kerana mereka paling pandai.</p>
+        <ul>
+          <li>PRS membantu kawan yang sedih, keliru atau tiada kawan.</li>
+          <li>PRS menyokong guru bimbingan dan kaunseling (GBK) menjalankan aktiviti.</li>
+          <li>PRS menunjukkan contoh tingkah laku yang baik.</li>
+        </ul>
+        <div class="tip"><strong>Ingat:</strong> Sesiapa sahaja boleh menjadi PRS jika ada semangat ingin membantu.</div>
+        <button class="read">Saya faham (+20 XP)</button>
+      </div></details>
+
+    <details class="mod c2" data-mod="3"><summary><span class="tag">Modul 3</span><h3>Ciri-ciri PRS</h3><span class="done" hidden>Selesai</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>Mesra</strong>: senyum dan mudah didekati.</li>
+          <li><strong>Pendengar yang baik</strong>: mendengar tanpa menyampuk.</li>
+          <li><strong>Empati</strong>: cuba faham perasaan kawan.</li>
+          <li><strong>Amanah</strong>: menyimpan rahsia kawan.</li>
+          <li><strong>Jujur dan bertanggungjawab</strong>: menepati janji.</li>
+          <li><strong>Tidak menghakimi</strong>: tidak mengejek atau menyalahkan.</li>
+        </ul>
+        <div class="tip"><strong>Empati</strong> bermaksud membayangkan diri kita di tempat kawan. "Kalau saya jadi dia, apa saya rasa?"</div>
+        <button class="read">Saya faham (+20 XP)</button>
+      </div></details>
+
+    <details class="mod c3" data-mod="4"><summary><span class="tag">Modul 4</span><h3>Mendengar aktif</h3><span class="done" hidden>Selesai</span></summary>
+      <div class="body">
+        <p>Mendengar aktif ialah mendengar dengan telinga, mata dan hati.</p>
+        <ul>
+          <li>Pandang kawan semasa dia bercakap.</li>
+          <li>Angguk dan beri respons ringkas: "Oh…", "Lagi?", "Saya faham."</li>
+          <li>Jangan bermain telefon atau melihat tempat lain.</li>
+          <li>Ulang semula apa yang kawan cakap: "Jadi, awak sedih sebab…"</li>
+          <li>Tanya soalan terbuka: "Apa yang berlaku?" bukan "Awak marah ke?"</li>
+        </ul>
+        <div class="tip"><strong>Soalan terbuka</strong> memerlukan jawapan panjang. <strong>Soalan tertutup</strong> hanya dijawab "ya" atau "tidak".</div>
+        <button class="read">Saya faham (+20 XP)</button>
+      </div></details>
+
+    <details class="mod c4" data-mod="5"><summary><span class="tag">Modul 5</span><h3>Bantu atau rujuk?</h3><span class="done" hidden>Selesai</span></summary>
+      <div class="body">
+        <p>PRS boleh membantu masalah kecil. Untuk masalah besar atau berbahaya, PRS mesti <strong>merujuk kepada guru kaunseling</strong>.</p>
+        <div class="steps">
+          <div><b>D</b>Dengar</div><div><b>F</b>Faham</div><div><b>B</b>Bantu</div><div><b>R</b>Rujuk</div>
+        </div>
+        <ul>
+          <li>Bantu sendiri: kawan lupa kerja rumah, tiada kawan bermain, gaduh kecil.</li>
+          <li>Rujuk GBK: dibuli, dipukul, ingin cedera diri, masalah keluarga yang berat.</li>
+        </ul>
+        <div class="tip"><strong>Etika rahsia:</strong> Rahsia kawan dijaga, <em>kecuali</em> jika ada orang dalam bahaya. Ketika itu, beritahu guru. Itu bukan mengkhianati kawan, itu menyelamatkannya.</div>
+        <button class="read">Saya faham (+20 XP)</button>
+      </div></details>
+  </div>
+</section>
+
+<!-- ============ PERMAINAN ============ -->
+<section id="main" hidden>
+  <h3 class="ghead"><span class="tag">Modul 1</span>Uji kefahaman antibuli</h3>
+  <div class="gamepick" id="pick1"></div>
+  <h3 class="ghead"><span class="tag o">Modul 2–5</span>Kemahiran PRS</h3>
+  <div class="gamepick" id="pick2"></div>
+  <div class="stage" id="stage" aria-live="polite"></div>
+</section>
+
+<!-- ============ LENCANA ============ -->
+<section id="lencana" hidden>
+  <h2 style="font-size:30px;margin-top:16px">Koleksi lencana</h2>
+  <p class="muted" style="margin-top:6px">Lencana dibuka apabila kamu menyelesaikan misi. Kumpul semuanya!</p>
+  <div class="badges" id="badges"></div>
+  <p class="note">Kemajuan kamu disimpan secara automatik dan boleh dilihat oleh guru PRS.</p>
+</section>
+</main>
+
+</div>
+
+<!-- ============ PAPAN PEMUKA GURU ============ -->
+<div id="guru" class="guru" hidden>
+  <div class="guru-top">
+    <div class="brand"><div class="logo">PRS</div><div><small style="display:block;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.04em;text-transform:uppercase">Papan pemuka guru</small><h2>Kemajuan Murid PRS</h2></div></div>
+    <button class="out" id="guruOut">Keluar</button>
+  </div>
+
+  <form class="card" id="gPinCard" style="max-width:420px" autocomplete="off">
+    <h3 id="gPinTitle" style="font-size:22px">PIN guru</h3>
+    <p class="muted" id="gPinText" style="font-size:15px">Masukkan PIN guru untuk melihat rekod murid.</p>
+    <div class="field"><label for="gPin">PIN guru</label><input id="gPin" class="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div>
+    <div class="field" id="gPin2Wrap" hidden><label for="gPin2">Taip semula PIN</label><input id="gPin2" class="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div>
+    <p class="err" id="gErr"></p>
+    <button class="primary" id="gBtn" type="submit">Buka papan pemuka</button>
+  </form>
+
+  <div id="gMain" hidden style="display:grid;gap:18px">
+    <div class="tiles">
+      <div class="tile"><b id="tJumlah">0</b><span>Murid berdaftar</span></div>
+      <div class="tile"><b id="tM1">0</b><span>Selesai Modul 1</span></div>
+      <div class="tile"><b id="tXp">0</b><span>Purata XP</span></div>
+      <div class="tile"><b id="tAktif">0</b><span>Aktif 7 hari lepas</span></div>
+    </div>
+    <div class="tools">
+      <div class="field"><label for="fKelas">Kelas</label><select id="fKelas"></select></div>
+      <div class="field"><label for="fCari">Cari nama</label><input id="fCari" placeholder="Taip nama…" autocomplete="off"></div>
+      <div class="field"><label for="fSusun">Susun ikut</label>
+        <select id="fSusun"><option value="nama">Nama (A–Z)</option><option value="xp">XP tertinggi</option><option value="aktif">Aktif terkini</option><option value="m1">Kemajuan Modul 1</option></select></div>
+      <button class="ghostbtn" id="gReload" type="button">Muat semula</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th rowspan="2">Nama</th><th rowspan="2">Kelas</th><th rowspan="2" class="num">XP</th><th rowspan="2">Tahap</th><th rowspan="2">Modul 1–5</th>
+            <th colspan="4" class="grp">Modul 1: markah terbaik</th><th colspan="3" class="grp">Modul 2–5</th><th rowspan="2">Aktif terakhir</th></tr>
+          <tr><th class="num">Buli?</th><th class="num">Jenis</th><th class="num">Akta</th><th class="num">Susun</th><th class="num">Kuiz</th><th class="num">Bantu</th><th class="num">Dengar</th></tr>
+        </thead>
+        <tbody id="gBody"></tbody>
+      </table>
+    </div>
+    <div id="gDetail" hidden></div>
+    <p class="muted" style="font-size:14px">Semua rekod juga ada dalam Google Sheet anda. <a class="sheetlink" id="gSheet" target="_blank" rel="noopener" href="#">Buka Google Sheet</a> <span id="gMasa"></span></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const LEVELS=[[0,"Perintis"],[80,"Pendengar"],[200,"Penolong"],[360,"Pembimbing"],[560,"PRS Bintang"]];
+const fresh=()=>({xp:0,mods:[],best:{},tries:{},badges:[],suara:""});
+let S=fresh(), SES=null;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=t=>String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ===== sambungan pelayan ===== */
+const HAS_GAS=typeof google!=="undefined"&&google.script&&google.script.run;
+function api(fn,...args){
+  return new Promise((res,rej)=>{
+    if(!HAS_GAS){rej(new Error("Laman ini belum disambungkan ke Google Sheet."));return}
+    google.script.run.withSuccessHandler(res).withFailureHandler(e=>{
+      const m=String((e&&e.message)||e||"Ralat tidak diketahui").replace(/^(Error|Exception):\s*/,"");
+      rej(new Error(m));
+    })[fn](...args);
+  });
+}
+function show(id){["gate","app","guru"].forEach(k=>$("#"+k).hidden=k!==id);window.scrollTo(0,0)}
+
+/* ===== simpan kemajuan ===== */
+let saveTimer=null,saving=false,dirty=false;
+function setSt(t,bad){const el=$("#saveSt");el.textContent=t;el.classList.toggle("bad",!!bad)}
+function save(){
+  if(!SES)return;
+  if(SES.demo){setSt("Mod cubaan · tidak disimpan");return}
+  dirty=true;clearTimeout(saveTimer);saveTimer=setTimeout(flush,800);setStatusPending();
+}
+function setStatusPending(){if(!saving)setSt("Belum disimpan…")}
+async function flush(){
+  if(!SES||SES.demo||saving||!dirty)return;
+  saving=true;dirty=false;setSt("Menyimpan…");
+  const ses=SES;
+  try{await api("apiSimpan",ses.id,ses.token,S);if(SES===ses)setSt("Disimpan ✓")}
+  catch(e){
+    if(/^SESI:/.test(e.message)){saving=false;toast(e.message.replace(/^SESI:\s*/,""));endSession();return}
+    dirty=true;setSt("Gagal disimpan, mencuba lagi…",true);setTimeout(flush,5000);
+  }
+  saving=false;if(dirty)flush();
+}
+async function flushNow(){clearTimeout(saveTimer);for(let i=0;i<20&&(saving||dirty);i++){if(!saving)await flush();else await new Promise(r=>setTimeout(r,300))}}
+window.addEventListener("beforeunload",e=>{if(dirty||saving){e.preventDefault();e.returnValue=""}});
+
+/* ===== sesi ===== */
+function beginSession(ses){
+  SES=ses;S=Object.assign(fresh(),ses.state||{});
+  $("#whoNama").textContent=ses.nama;$("#whoKelas").textContent=ses.demo?"Mod cubaan":"Kelas "+ses.kelas;
+  setSt(ses.demo?"Mod cubaan · tidak disimpan":"Disimpan ✓");
+  ta.value=S.suara||"";
+  $$("nav.tabs button").forEach((x,i)=>x.setAttribute("aria-selected",i===0));
+  ["belajar","main","lencana"].forEach((id,i)=>$("#"+id).hidden=i!==0);
+  seen.clear();seen.add(0);go(0);render();activeGame="bukan";start("bukan");
+  show("app");
+}
+function endSession(){
+  SES=null;S=fresh();dirty=false;clearTimeout(saveTimer);
+  ["mPin","mPinBaru","mPinBaru2","dPin","dPin2"].forEach(id=>$("#"+id).value="");
+  seg(false);$("#mErr").textContent="";show("gate");loadKelas();
+}
+$("#logout").onclick=async()=>{$("#logout").disabled=true;setSt("Menyimpan…");await flushNow();$("#logout").disabled=false;endSession()};
+
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2600)}
+function lvl(){let i=0;LEVELS.forEach((l,k)=>{if(S.xp>=l[0])i=k});return i}
+function render(){
+  const i=lvl(),cur=LEVELS[i][0],nxt=LEVELS[i+1]?LEVELS[i+1][0]:cur;
+  $("#lvl").textContent="Tahap "+(i+1)+" · "+LEVELS[i][1];
+  $("#xpnum").textContent=S.xp+" XP";
+  $("#bar").style.width=(nxt===cur?100:((S.xp-cur)/(nxt-cur)*100))+"%";
+  $$(".mod").forEach(m=>{const d=S.mods.includes(m.dataset.mod);m.querySelector(".done").hidden=!d;const b=m.querySelector(".read");b.disabled=d;b.textContent=d?"Sudah dibaca":"Saya faham (+20 XP)"});
+  $("#m1done").hidden=!S.mods.includes("1");
+  renderBadges();renderPicks();
+}
+function addXP(n){const before=lvl();S.xp+=n;save();render();if(lvl()>before)toast("Naik tahap! Kamu kini "+LEVELS[lvl()][1]);}
+function badge(id){if(!S.badges.includes(id)){S.badges.push(id);save();renderBadges();const b=BADGES.find(x=>x.id===id);setTimeout(()=>toast("Lencana baharu: "+b.name),1000)}}
+
+/* tabs */
+$$("nav.tabs button").forEach(b=>b.onclick=()=>{
+  $$("nav.tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));
+  ["belajar","main","lencana"].forEach(id=>$("#"+id).hidden=id!==b.dataset.tab);
+  window.scrollTo({top:0});
+});
+
+/* ===== Modul 1 ===== */
+const steps=$$("#m1 .step");let cur=0;const seen=new Set([0]);
+$("#dots").innerHTML=steps.map((s,i)=>`<button data-i="${i}">${i+1}. ${s.dataset.step}</button>`).join("");
+function go(i){
+  cur=i;seen.add(i);
+  steps.forEach((s,k)=>s.hidden=k!==i);
+  $$("#dots button").forEach((d,k)=>{d.classList.toggle("seen",seen.has(k));if(k===i)d.setAttribute("aria-current","step");else d.removeAttribute("aria-current")});
+  $("#prev").disabled=i===0;
+  const last=i===steps.length-1,nx=$("#next");
+  if(last){const done=S.mods.includes("1");nx.className=done?"go":"finish";nx.textContent=done?"Modul 1 sudah selesai":"Tamat Modul 1 (+40 XP)";nx.disabled=done}
+  else{nx.className="go";nx.textContent="Seterusnya";nx.disabled=false}
+}
+$$("#dots button").forEach(d=>d.onclick=()=>go(+d.dataset.i));
+$("#prev").onclick=()=>{if(cur>0){go(cur-1);$("#m1").scrollIntoView({block:"start"})}};
+$("#next").onclick=()=>{
+  if(cur<steps.length-1){go(cur+1);$("#m1").scrollIntoView({block:"start"});return}
+  if(!S.mods.includes("1")){S.mods.push("1");addXP(40);badge("perisai");toast("+40 XP · Modul 1 selesai");go(cur)}
+};
+$$(".key").forEach(k=>k.onclick=()=>{
+  if(k.classList.contains("open"))return;k.classList.add("open");
+  k.querySelector("strong").textContent=k.dataset.k;k.querySelector(".hid").outerHTML=`<span>${k.dataset.t}</span>`;
+});
+$$(".flip").forEach(f=>{const desc=f.querySelector("span:not(.ico):not(.tap)").textContent;f.onclick=()=>{
+  const on=f.getAttribute("aria-pressed")!=="true";f.setAttribute("aria-pressed",on);
+  f.querySelector("span:not(.ico):not(.tap)").innerHTML=on?"<em>Contoh:</em> "+f.dataset.ex:desc;
+  f.querySelector(".tap").textContent=on?"Tekan untuk kembali":"Tekan untuk contoh";
+}});
+$$(".check").forEach(c=>c.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
+  const ok=b.dataset.o===c.dataset.ans;c.querySelectorAll("[data-o]").forEach(x=>x.classList.remove("right","wrong"));
+  b.classList.add(ok?"right":"wrong");const say=c.querySelector(".say");say.hidden=false;say.textContent=ok?say.dataset.ok:say.dataset.no;
+}));
+const ta=$("#suara");
+ta.oninput=()=>{S.suara=ta.value.slice(0,300);save()};
+$$(".chips button").forEach(b=>b.onclick=()=>{ta.value=b.dataset.s;S.suara=ta.value;save();ta.focus()});
+
+/* modul 2–5 */
+$$(".mod .read").forEach(btn=>btn.onclick=()=>{
+  const id=btn.closest(".mod").dataset.mod;if(S.mods.includes(id))return;
+  S.mods.push(id);addXP(20);toast("+20 XP · Modul "+id+" selesai");
+  if(["2","3","4","5"].every(x=>S.mods.includes(x)))badge("ilmu");
+});
+
+/* lencana */
+const BADGES=[
+  {id:"perisai",name:"Perisai Antibuli",desc:"Tamatkan pelajaran Modul 1",c:"--navy"},
+  {id:"detektif",name:"Detektif Buli",desc:"Skor 7/8 atau lebih dalam Buli atau Bukan?",c:"--coral"},
+  {id:"jenis",name:"Pengenal Jenis",desc:"Skor 7/9 atau lebih dalam Teka Jenis Buli",c:"--plum"},
+  {id:"akta",name:"Pakar Akta 876",desc:"Skor 8/10 atau lebih dalam Apa Kata Akta?",c:"--sun"},
+  {id:"peta",name:"Peta Tindakan",desc:"Susun kedua-dua laluan dengan betul",c:"--teal"},
+  {id:"ilmu",name:"Ulat Buku PRS",desc:"Baca Modul 2 hingga 5",c:"--teal"},
+  {id:"kuiz",name:"Otak Kilat",desc:"Skor 6/8 atau lebih dalam Kuiz Kilat",c:"--sun"},
+  {id:"bantu",name:"Penjaga Selamat",desc:"Semua betul dalam Bantu atau Rujuk",c:"--coral"},
+  {id:"dengar",name:"Telinga Emas",desc:"Skor 7/8 atau lebih dalam Pendengar Hebat",c:"--plum"},
+  {id:"bintang",name:"PRS Bintang",desc:"Capai 560 XP",c:"--navy"}
+];
+function renderBadges(){
+  if(S.xp>=560&&!S.badges.includes("bintang")){S.badges.push("bintang");save()}
+  $("#badges").innerHTML=BADGES.map(b=>`<div class="badge ${S.badges.includes(b.id)?"":"locked"}">
+    <svg viewBox="0 0 64 64"><polygon points="32,3 40,22 61,24 45,38 50,59 32,48 14,59 19,38 3,24 24,22" fill="var(${b.c})"/><circle cx="32" cy="32" r="9" fill="var(--surface)"/></svg>
+    <strong>${b.name}</strong><span>${S.badges.includes(b.id)?"Dibuka":b.desc}</span></div>`).join("");
+}
+
+/* ===== data permainan ===== */
+
+const BUKAN=[
+ {s:"Ali dan kawan-kawannya mengejek Raju \"gemuk\" setiap hari sehingga Raju takut datang ke sekolah.",a:0,e:"Buli lisan: disengajakan, berulang, dan Raju mengalami kemudaratan psikologi."},
+ {s:"Siti tertolak bahu Amir ketika beratur di kantin, lalu terus meminta maaf.",a:1,e:"Bukan buli kerana ia tidak disengajakan, dan Siti terus meminta maaf."},
+ {s:"Sekumpulan murid membuat kumpulan WhatsApp untuk mengutuk Mei dan menyebar gambarnya tanpa izin.",a:0,e:"Buli siber: kata-kata menghina dan memalukan dibuat melalui telefon."},
+ {s:"Dua kawan baik saling bergurau dan ketawa. Apabila seorang berkata \"cukup\", mereka terus berhenti.",a:1,e:"Gurauan biasa. Kedua-dua selesa dan mereka berhenti apabila diminta."},
+ {s:"Seorang murid dipukul oleh murid lain sehingga cedera teruk dan dibawa ke klinik, walaupun hanya sekali.",a:0,e:"Buli fizikal. Satu kejadian yang serius juga dikira buli menurut Akta 876."},
+ {s:"Farah menyuruh semua kawan sekelas jangan bermain dengan Nurul supaya Nurul tiada kawan.",a:0,e:"Buli sosial: sengaja mengasingkan Nurul daripada rakan-rakan."},
+ {s:"Ketua kelas menegur kawan yang bising dengan sopan supaya kelas senyap semasa guru tiada.",a:1,e:"Bukan buli. Teguran yang sopan bukan bertujuan menyakiti sesiapa."},
+ {s:"Danish berkali-kali menyorok dan mengoyak buku latihan kawannya.",a:0,e:"Buli fizikal: merosakkan barang kepunyaan mangsa secara berulang."},
+ {s:"Pasukan Hakim kalah dalam perlawanan bola sepak dan dia berasa sedih.",a:1,e:"Bukan buli. Kalah dalam permainan yang adil ialah perkara biasa."},
+ {s:"Beberapa murid sering mengejek kawan mereka kerana agama dan kaumnya.",a:0,e:"Buli diskriminasi berdasarkan agama dan kaum."}
+];
+const JENIS_OPT=["Fizikal","Lisan","Sosial","Diskriminasi","Siber"];
+const JENIS=[
+ {s:"Menendang beg dan memijak bekal makanan kawan.",a:0,e:"Fizikal: merosakkan barang kepunyaan mangsa."},
+ {s:"\"Kalau tak bagi duit belanja, siap kau balik nanti!\"",a:1,e:"Lisan: kata-kata yang mengugut mangsa."},
+ {s:"Menyebar cerita bohong tentang seorang kawan supaya semua orang membencinya.",a:2,e:"Sosial: merosakkan nama baik mangsa."},
+ {s:"Mengejek dan meniru cara kawan yang berkerusi roda bergerak.",a:3,e:"Diskriminasi: memalukan mangsa kerana ketidakupayaan."},
+ {s:"Menghantar mesej menghina kepada kawan dalam permainan dalam talian setiap malam.",a:4,e:"Siber: kata-kata menghina melalui internet."},
+ {s:"\"Budak perempuan tak layak main bola!\" sambil seluruh kumpulan ketawakan Aishah.",a:3,e:"Diskriminasi: memalukan mangsa kerana jantinanya."},
+ {s:"Setiap hari, tidak membenarkan murid baharu duduk bersama semasa rehat dan menyuruh orang lain menjauhinya.",a:2,e:"Sosial: memulaukan mangsa."},
+ {s:"Menolak kawan dengan kuat sehingga jatuh di tangga.",a:0,e:"Fizikal: mencederakan badan mangsa."},
+ {s:"Mengedit gambar kawan supaya kelihatan lucu dan memuat naiknya ke media sosial.",a:4,e:"Siber: memalukan mangsa melalui media sosial."}
+];
+const AKTA=[
+ {q:"Apakah nama undang-undang baharu Malaysia tentang buli?",o:["Akta Pendidikan 1996","Akta Antibuli 2026","Akta Kanak-Kanak 2001"],a:1,e:"Akta Antibuli 2026 ialah Akta 876."},
+ {q:"Menurut Akta 876, buli mestilah perbuatan yang…",o:["Tidak sengaja","Disengajakan","Hanya berlaku di sekolah"],a:1,e:"Seksyen 3(1): buli ialah perbuatan yang disengajakan dan ditujukan kepada mangsa."},
+ {q:"Bilakah satu kejadian sahaja sudah dikira buli?",o:["Jika kejadian itu serius","Jika berlaku pada hari Isnin","Tidak pernah, mesti berulang"],a:0,e:"Buli boleh berulang ATAU satu kejadian yang serius."},
+ {q:"Siapakah yang boleh membuat aduan buli kepada Tribunal?",o:["Sesiapa sahaja di media sosial","Mangsa, atau ibu bapa atau penjaganya","Hanya guru besar"],a:1,e:"Seksyen 2: pengadu ialah mangsa atau ibu, bapa atau penjaga mangsa."},
+ {q:"Apakah yang WAJIB ditubuhkan oleh setiap sekolah?",o:["Jawatankuasa pencegahan dan pengurusan kes buli","Kelab bola sepak","Pasukan polis sekolah"],a:0,e:"Seksyen 7 dan 8 mewajibkan jawatankuasa antibuli di setiap institusi pendidikan."},
+ {q:"Saluran untuk murid melaporkan buli mestilah…",o:["Diumumkan nama pelapor","Mudah diakses, mesra kanak-kanak dan rahsia","Hanya untuk murid tahun 6"],a:1,e:"Seksyen 7(1)(c): saluran mesti boleh diakses, peka kanak-kanak dan menjaga kerahsiaan."},
+ {q:"Yang manakah perintah yang BOLEH dibuat oleh Tribunal kepada pembuli?",o:["Menukar nama","Memohon maaf dan memadam kandungan buli di media sosial","Berpindah ke negara lain"],a:1,e:"Seksyen 43 membenarkan perintah memohon maaf dan memadam kandungan buli."},
+ {q:"Jika pembuli masih kanak-kanak dan diperintah membayar pampasan, siapakah yang membayar?",o:["Ibu bapa atau penjaganya","Kawan-kawan pembuli","Tiada sesiapa"],a:0,e:"Seksyen 43(1)(d) dan (e): ibu, bapa atau penjaga yang membayar."},
+ {q:"Berapakah pampasan maksimum yang boleh diperintahkan oleh Tribunal?",o:["RM2,500","RM25,000","RM250,000"],a:2,e:"Seksyen 43(1)(e): pampasan tidak melebihi dua ratus lima puluh ribu ringgit."},
+ {q:"Bolehkah kamu menyiarkan nama atau gambar kanak-kanak yang terlibat dalam kes Tribunal?",o:["Boleh, supaya semua orang tahu","Boleh, jika ramai yang suka","Tidak, itu satu kesalahan"],a:2,e:"Seksyen 50: denda sehingga RM50,000 atau penjara sehingga 2 tahun, atau kedua-duanya."}
+];
+const SUSUN=[
+ {t:"Langkah PRS apabila berdepan kes buli",items:["Kenal pasti situasi buli","Beri sokongan awal kepada mangsa","Laporkan kepada guru kaunseling atau jawatankuasa antibuli","Jaga kerahsiaan maklumat mangsa"],e:"Kenal pasti, sokong, lapor, rahsiakan. Inilah peta tindakan PRS daripada modul SAFE."},
+ {t:"Laluan aduan buli yang berlaku di sekolah",items:["Mangsa atau ibu bapa mengadu kepada jawatankuasa antibuli sekolah","Jika tiada tindakan wajar, aduan dibawa ke Tribunal","Tribunal menjalankan pendengaran tertutup","Tribunal membuat award, jika boleh dalam 60 hari","Award mesti dipatuhi dalam 30 hari"],e:"Seksyen 29, 37, 42 dan 44 Akta 876."}
+];
+const KUIZ=[
+ {q:"Apakah maksud PRS?",o:["Pengawas Rakan Sekolah","Pembimbing Rakan Sebaya","Pasukan Rekreasi Sekolah"],a:1,e:"PRS ialah Pembimbing Rakan Sebaya, murid yang membantu kawan-kawan."},
+ {q:"Siapakah yang melatih PRS di sekolah?",o:["Guru bimbingan dan kaunseling","Pengawas sekolah","Ibu bapa"],a:0,e:"Guru bimbingan dan kaunseling (GBK) melatih dan membimbing PRS."},
+ {q:"Ciri manakah PALING penting bagi seorang PRS?",o:["Paling pandai dalam kelas","Suka menolong dan boleh dipercayai","Paling tinggi badannya"],a:1,e:"PRS tidak perlu paling pandai. Yang penting, suka menolong dan amanah."},
+ {q:"Empati bermaksud…",o:["Memarahi kawan yang salah","Memahami perasaan kawan seolah-olah kita di tempatnya","Memberi hadiah kepada kawan"],a:1,e:"Empati ialah cuba merasai apa yang kawan rasa."},
+ {q:"Yang manakah soalan TERBUKA?",o:["Awak sedih ke?","Awak dah makan?","Boleh ceritakan apa yang berlaku?"],a:2,e:"Soalan terbuka mengajak kawan bercerita panjang, bukan sekadar ya atau tidak."},
+ {q:"Kawan memberitahu dia mahu mencederakan diri. Apa patut PRS buat?",o:["Simpan rahsia itu selama-lamanya","Segera beritahu guru kaunseling","Ceritakan kepada seluruh kelas"],a:1,e:"Jika ada bahaya, rahsia mesti dikongsi dengan guru untuk menyelamatkan kawan."},
+ {q:"PRS juga dikenali sebagai…",o:["Contoh teladan kepada rakan","Ketua yang menghukum","Pembantu kantin"],a:0,e:"PRS menunjukkan tingkah laku baik supaya kawan-kawan boleh mencontohinya."},
+ {q:"Langkah membantu kawan mengikut urutan ialah…",o:["Rujuk, Bantu, Dengar, Faham","Dengar, Faham, Bantu, Rujuk","Bantu, Dengar, Rujuk, Faham"],a:1,e:"Ingat D-F-B-R: Dengar, Faham, Bantu, Rujuk jika perlu."}
+];
+const BANTU=[
+ {s:"Aina menangis kerana dia tertinggal buku latihan Matematik di rumah.",a:0,e:"Masalah kecil. Kamu boleh menenangkan Aina dan cadangkan dia beritahu cikgu dengan jujur."},
+ {s:"Danial memberitahu ada murid tahun 6 selalu meminta duit belanjanya dengan ugutan.",a:1,e:"Ini buli dan ugutan. Mesti dirujuk kepada guru kaunseling segera."},
+ {s:"Mei Ling murid baharu dan selalu duduk seorang diri waktu rehat.",a:0,e:"Kamu boleh menegur, mengajaknya duduk bersama dan memperkenalkan kawan lain."},
+ {s:"Kavin ada lebam di tangan dan berkata ayahnya selalu memukulnya.",a:1,e:"Ini keselamatan Kavin. Beritahu guru kaunseling dengan segera."},
+ {s:"Dua orang kawan bergaduh kecil kerana berebut bola semasa PJ.",a:0,e:"Kamu boleh dengar kedua-dua pihak dan bantu mereka berkongsi atau bergilir."},
+ {s:"Hana menulis dalam diari bahawa dia tidak mahu hidup lagi.",a:1,e:"Ini sangat serius. Jangan simpan rahsia ini. Terus beritahu guru kaunseling."}
+];
+const DENGAR=[
+ {s:"Memandang mata kawan ketika dia bercakap.",a:0},
+ {s:"Bermain telefon sambil mendengar cerita kawan.",a:1},
+ {s:"Mengangguk dan berkata \"Saya faham\".",a:0},
+ {s:"Menyampuk dan terus bercerita tentang masalah sendiri.",a:1},
+ {s:"Mengulang semula: \"Jadi awak kecewa sebab tak terpilih?\"",a:0},
+ {s:"Ketawa apabila kawan menceritakan masalahnya.",a:1},
+ {s:"Duduk menghadap kawan dengan badan condong sedikit ke depan.",a:0},
+ {s:"Terus menyalahkan kawan: \"Itu salah awak sendiri!\"",a:1}
+];
+const GAMES={
+ bukan:{grp:1,name:"Buli atau Bukan?",desc:"Kenal pasti sama ada situasi itu buli menggunakan empat kunci.",data:BUKAN,n:8,mode:"pick",prompt:"Adakah ini buli?",labels:["Buli","Bukan buli"],scene:"Situasi",badge:["detektif",7]},
+ jenis:{grp:1,name:"Teka Jenis Buli",desc:"Padankan situasi dengan lima jenis buli dalam Akta 876.",data:JENIS,mode:"pick",prompt:"Apakah jenis buli ini?",labels:JENIS_OPT,scene:"Situasi",badge:["jenis",7]},
+ akta:{grp:1,name:"Apa Kata Akta?",desc:"10 soalan tentang Akta Antibuli 2026 dan Tribunal.",data:AKTA,mode:"quiz",badge:["akta",8]},
+ susun:{grp:1,name:"Susun Peta Tindakan",desc:"Susun langkah PRS dan laluan aduan mengikut urutan.",mode:"order"},
+ kuiz:{grp:2,name:"Kuiz Kilat PRS",desc:"8 soalan objektif tentang konsep PRS.",data:KUIZ,mode:"quiz",badge:["kuiz",6]},
+ bantu:{grp:2,name:"Bantu atau Rujuk?",desc:"Baca situasi, buat keputusan yang selamat.",data:BANTU,mode:"pick",prompt:"Apa tindakan PRS?",labels:["Saya boleh bantu","Rujuk guru kaunseling"],scene:"Situasi",badge:["bantu","all"]},
+ dengar:{grp:2,name:"Pendengar Hebat",desc:"Tingkah laku mendengar: betul atau salah?",data:DENGAR,mode:"pick",prompt:"Adakah ini cara mendengar yang betul?",labels:["Betul","Salah"],scene:"Tingkah laku",badge:["dengar",7]}
+};
+const TOT={bukan:8,jenis:9,akta:10,susun:2,kuiz:8,bantu:6,dengar:8};
+
+
+let G=null,activeGame="bukan";
+function renderPicks(){
+  [1,2].forEach(g=>{
+    $("#pick"+g).innerHTML=Object.entries(GAMES).filter(([,v])=>v.grp===g).map(([k,v],i)=>{
+      const tot=TOT[k];
+      const best=S.best[k]!=null?`<span class="best">Terbaik: ${S.best[k]}/${tot}</span>`:"";
+      return `<button data-game="${k}" aria-pressed="${k===activeGame}"><em>Permainan ${g===1?i+1:i+5}</em><strong>${v.name}</strong><span>${v.desc}</span>${best}</button>`}).join("");
+  });
+  $$(".gamepick button").forEach(b=>b.onclick=()=>start(b.dataset.game));
+}
+function start(type){
+  activeGame=type;renderPicks();
+  const cfg=GAMES[type];
+  if(cfg.mode==="order"){G={type,cfg,i:0,score:0,items:SUSUN};showOrder();return}
+  G={type,cfg,items:shuffle(cfg.data).slice(0,cfg.n||cfg.data.length),i:0,score:0};
+  showQ();
+}
+function head(){return `<div class="qhead"><span>${G.cfg.name} · ${G.cfg.mode==="order"?"Pusingan":"Soalan"} ${G.i+1} / ${G.items.length}</span><span id="sc">Markah: ${G.score}</span></div>`}
+function showQ(){
+  const st=$("#stage"),it=G.items[G.i],c=G.cfg;
+  if(c.mode==="quiz"){
+    st.innerHTML=head()+`<div class="q">${it.q}</div><div class="opts">${it.o.map((o,k)=>`<button data-k="${k}">${String.fromCharCode(65+k)}. ${o}</button>`).join("")}</div>`;
+  }else{
+    st.innerHTML=head()+`<div class="scene"><small>${c.scene}</small>${it.s}</div><div class="q">${c.prompt}</div>
+      <div class="big">${c.labels.map((l,k)=>`<button data-k="${k}">${l}</button>`).join("")}</div>`;
+  }
+  st.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>answer(+b.dataset.k));
+}
+function answer(k){
+  const st=$("#stage"),it=G.items[G.i],ok=k===it.a;
+  st.querySelectorAll("[data-k]").forEach(b=>{b.disabled=true;if(+b.dataset.k===it.a)b.classList.add("right");else if(+b.dataset.k===k)b.classList.add("wrong")});
+  if(ok){G.score++;addXP(10)}
+  const exp=it.e||(it.a===0?"Ini tanda kawan sedang didengari dengan baik.":"Tingkah laku ini membuat kawan rasa tidak dihargai.");
+  const fb=document.createElement("div");fb.className="feedback";
+  fb.innerHTML=(ok?"<b>Betul! +10 XP.</b> ":"<b class='no'>Belum tepat.</b> ")+exp;
+  const nx=document.createElement("button");nx.className="next";nx.textContent=G.i+1<G.items.length?"Seterusnya":"Lihat keputusan";
+  nx.onclick=()=>{G.i++;G.i<G.items.length?showQ():finish()};
+  st.append(fb,nx);nx.focus({preventScroll:true});
+  $("#sc").textContent="Markah: "+G.score;
+}
+function showOrder(){
+  const st=$("#stage"),r=G.items[G.i],pool=shuffle(r.items.map((t,i)=>({t,i})));let seq=[];
+  st.innerHTML=head()+`<div class="q">${r.t}</div><p class="muted" style="font-size:15px">Tekan kad mengikut urutan yang betul, dari langkah pertama hingga terakhir.</p>
+    <div class="seq" id="seq"><span class="empty">Susunan kamu akan muncul di sini.</span></div>
+    <div class="pool" id="pool">${pool.map(p=>`<button data-i="${p.i}">${p.t}</button>`).join("")}</div>
+    <div class="btnrow"><button class="ghost" id="undo">Ulang susun</button><button class="next" id="chk" disabled>Semak</button></div>`;
+  const draw=()=>{$("#seq").innerHTML=seq.length?seq.map(i=>`<div data-i="${i}">${r.items[i]}</div>`).join(""):`<span class="empty">Susunan kamu akan muncul di sini.</span>`;
+    $$("#pool button").forEach(b=>b.disabled=seq.includes(+b.dataset.i));$("#chk").disabled=seq.length!==r.items.length};
+  $$("#pool button").forEach(b=>b.onclick=()=>{seq.push(+b.dataset.i);draw()});
+  $("#undo").onclick=()=>{seq=[];draw()};
+  $("#chk").onclick=()=>{
+    const ok=seq.every((v,k)=>v===k);
+    $$("#seq div").forEach((d,k)=>d.classList.add(+d.dataset.i===k?"right":"wrong"));
+    $$("#pool button").forEach(b=>b.disabled=true);$("#undo").remove();
+    if(ok){G.score++;addXP(20)}
+    $("#sc").textContent="Markah: "+G.score;
+    const fb=document.createElement("div");fb.className="feedback";
+    fb.innerHTML=ok?`<b>Tepat! +20 XP.</b> ${r.e}`:`<b class='no'>Belum tepat.</b> Urutan betul: ${r.items.map((t,k)=>(k+1)+". "+t).join(" → ")}`;
+    $("#chk").replaceWith(fb);
+    const nx=document.createElement("button");nx.className="next";nx.textContent=G.i+1<G.items.length?"Pusingan seterusnya":"Lihat keputusan";
+    nx.onclick=()=>{G.i++;G.i<G.items.length?showOrder():finish()};st.append(nx);
+  };
+}
+function finish(){
+  const n=G.items.length,p=G.score/n,stars=p===1?3:p>=.75?2:p>=.5?1:0,c=G.cfg;
+  S.best[G.type]=Math.max(S.best[G.type]||0,G.score);
+  S.tries[G.type]=(S.tries[G.type]||0)+1;save();
+  if(c.badge){const[id,th]=c.badge;if(th==="all"?G.score===n:G.score>=th)badge(id)}
+  if(G.type==="susun"&&G.score===n)badge("peta");
+  renderPicks();
+  const msg=stars===3?"Cemerlang! Kamu PRS sejati.":stars===2?"Bagus! Sedikit lagi untuk markah penuh.":stars===1?"Boleh tahan. Ulang baca modul dan cuba lagi.":"Jangan putus asa. Baca modul dahulu, kemudian cuba lagi.";
+  $("#stage").innerHTML=`<div class="end"><div class="stars" aria-label="${stars} bintang">${"★".repeat(stars)}${"☆".repeat(3-stars)}</div>
+    <div class="score">${G.score}/${n}</div><p>${msg}</p><p class="muted" style="font-size:14px">Markah terbaik: ${S.best[G.type]}/${n}</p>
+    <button class="next" id="again" style="justify-self:center">Main semula</button></div>`;
+  $("#again").onclick=()=>start(G.type);
+}
+
+/* ===== log masuk & daftar ===== */
+let namaList=[];
+function seg(daftar){
+  $("#segMasuk").setAttribute("aria-pressed",!daftar);$("#segDaftar").setAttribute("aria-pressed",daftar);
+  $("#fMasuk").hidden=daftar;$("#fDaftar").hidden=!daftar;
+}
+$("#segMasuk").onclick=()=>seg(false);
+$("#segDaftar").onclick=()=>seg(true);
+async function loadKelas(){
+  const sel=$("#mKelas");
+  if(!HAS_GAS){sel.innerHTML=`<option value="">Tiada sambungan</option>`;return}
+  sel.innerHTML=`<option value="">Memuatkan senarai kelas…</option>`;
+  try{
+    const ks=await api("apiKelas");
+    sel.innerHTML=`<option value="">${ks.length?"Pilih kelas":"Belum ada murid. Sila daftar."}</option>`+ks.map(k=>`<option>${esc(k)}</option>`).join("");
+    $("#kelasList").innerHTML=ks.map(k=>`<option value="${esc(k)}">`).join("");
+    if(!ks.length)seg(true);
+  }catch(e){sel.innerHTML=`<option value="">Gagal memuatkan. Muat semula halaman.</option>`;$("#mErr").textContent=e.message}
+  $("#mNama").innerHTML=`<option value="">Pilih kelas dahulu</option>`;$("#mNama").disabled=true;pinMode(true);
+}
+function pinMode(adaPin){$("#pinLama").hidden=!adaPin;$("#pinBaru").hidden=adaPin}
+$("#mKelas").onchange=async()=>{
+  const k=$("#mKelas").value,sel=$("#mNama");$("#mErr").textContent="";
+  if(!k){sel.disabled=true;sel.innerHTML=`<option value="">Pilih kelas dahulu</option>`;return}
+  sel.disabled=true;sel.innerHTML=`<option value="">Memuatkan nama…</option>`;
+  try{namaList=await api("apiNama",k);
+    sel.innerHTML=`<option value="">Pilih nama kamu</option>`+namaList.map(n=>`<option value="${esc(n.id)}">${esc(n.nama)}</option>`).join("");sel.disabled=false;
+  }catch(e){$("#mErr").textContent=e.message}
+};
+$("#mNama").onchange=()=>{const n=namaList.find(x=>x.id===$("#mNama").value);pinMode(!n||n.adaPin);$("#mErr").textContent=""};
+const pinOk=p=>/^\d{4}$/.test(p);
+$("#fMasuk").onsubmit=async e=>{
+  e.preventDefault();const err=$("#mErr");err.textContent="";
+  const id=$("#mNama").value,n=namaList.find(x=>x.id===id);
+  if(!id){err.textContent="Pilih kelas dan nama kamu dahulu.";return}
+  let pin="",baru="";
+  if(n&&!n.adaPin){baru=$("#mPinBaru").value;
+    if(!pinOk(baru)){err.textContent="PIN mesti 4 digit nombor.";return}
+    if(baru!==$("#mPinBaru2").value){err.textContent="Kedua-dua PIN tidak sama. Cuba lagi.";return}}
+  else{pin=$("#mPin").value;if(!pinOk(pin)){err.textContent="Masukkan PIN 4 digit kamu.";return}}
+  const b=$("#mBtn");b.disabled=true;b.textContent="Sedang masuk…";
+  try{const ses=await api("apiMasuk",id,pin,baru);beginSession(ses);toast("Selamat datang, "+ses.nama.split(" ")[0]+"!")}
+  catch(x){err.textContent=x.message}
+  b.disabled=false;b.textContent="Masuk";
+};
+$("#fDaftar").onsubmit=async e=>{
+  e.preventDefault();const err=$("#dErr");err.textContent="";
+  const nama=$("#dNama").value.trim(),kelas=$("#dKelas").value.trim(),pin=$("#dPin").value;
+  if(nama.length<3){err.textContent="Tulis nama penuh kamu.";return}
+  if(!kelas){err.textContent="Tulis nama kelas kamu, contoh 5 BESTARI.";return}
+  if(!pinOk(pin)){err.textContent="PIN mesti 4 digit nombor.";return}
+  if(pin!==$("#dPin2").value){err.textContent="Kedua-dua PIN tidak sama. Cuba lagi.";return}
+  const b=$("#dBtn");b.disabled=true;b.textContent="Mendaftar…";
+  try{const ses=await api("apiDaftar",nama,kelas,pin);beginSession(ses);toast("Pendaftaran berjaya. Selamat belajar!")}
+  catch(x){err.textContent=x.message}
+  b.disabled=false;b.textContent="Daftar dan mula";
+};
+if(!HAS_GAS){$("#demoNote").hidden=false}
+$("#demoBtn").onclick=()=>beginSession({demo:true,nama:"Murid Cubaan",kelas:"-",state:fresh()});
+
+/* ===== papan pemuka guru ===== */
+let GPIN="",GDATA=[],GSEL=null,gNew=false;
+const GAME_ORDER=["bukan","jenis","akta","susun","kuiz","bantu","dengar"];
+$("#toGuru").onclick=async()=>{
+  show("guru");$("#gMain").hidden=true;$("#gPinCard").hidden=false;$("#gErr").textContent="";$("#gPin").value="";$("#gPin2").value="";
+  if(!HAS_GAS){$("#gErr").textContent="Papan pemuka hanya berfungsi selepas laman dipasang dalam Google Apps Script.";return}
+  try{const s=await api("apiGuruStatus");gNew=!s.adaPin}catch(e){$("#gErr").textContent=e.message}
+  $("#gPinTitle").textContent=gNew?"Cipta PIN guru":"PIN guru";
+  $("#gPinText").textContent=gNew?"Ini kali pertama papan pemuka dibuka. Cipta PIN guru (4 hingga 8 digit). Jangan kongsi PIN ini dengan murid.":"Masukkan PIN guru untuk melihat rekod murid.";
+  $("#gPin2Wrap").hidden=!gNew;$("#gBtn").textContent=gNew?"Cipta PIN dan buka":"Buka papan pemuka";
+  $("#gPin").focus();
+};
+$("#guruOut").onclick=()=>{GPIN="";GDATA=[];GSEL=null;$("#gDetail").hidden=true;show("gate");loadKelas()};
+$("#gPinCard").onsubmit=async e=>{
+  e.preventDefault();const err=$("#gErr");err.textContent="";const p=$("#gPin").value;
+  if(!/^\d{4,8}$/.test(p)){err.textContent="PIN guru mesti 4 hingga 8 digit nombor.";return}
+  if(gNew&&p!==$("#gPin2").value){err.textContent="Kedua-dua PIN tidak sama.";return}
+  const b=$("#gBtn");b.disabled=true;
+  try{if(gNew){await api("apiGuruCipta",p);gNew=false}GPIN=p;await loadGuru();$("#gPinCard").hidden=true;$("#gMain").hidden=false}
+  catch(x){err.textContent=x.message}
+  b.disabled=false;
+};
+async function loadGuru(){
+  const d=await api("apiGuruData",GPIN);GDATA=d.murid;
+  $("#gSheet").href=d.sheetUrl;
+  $("#gMasa").textContent="· Dikemas kini "+new Date(d.masa).toLocaleTimeString("ms-MY",{hour:"2-digit",minute:"2-digit"});
+  const ks=[...new Set(GDATA.map(m=>m.kelas).filter(Boolean))].sort();
+  const prev=$("#fKelas").value;
+  $("#fKelas").innerHTML=`<option value="">Semua kelas</option>`+ks.map(k=>`<option ${k===prev?"selected":""}>${esc(k)}</option>`).join("");
+  drawGuru();
+  if(GSEL){const m=GDATA.find(x=>x.id===GSEL);m?detail(m):($("#gDetail").hidden=true)}
+}
+$("#gReload").onclick=async()=>{const b=$("#gReload");b.disabled=true;b.textContent="Memuatkan…";try{await loadGuru()}catch(e){toast(e.message)}b.disabled=false;b.textContent="Muat semula"};
+["fKelas","fSusun"].forEach(id=>$("#"+id).onchange=drawGuru);
+$("#fCari").oninput=drawGuru;
+function scoreCell(m,k){
+  const v=m.best[k],t=TOT[k];
+  if(v==null)return `<span class="sc no">–</span>`;
+  const p=v/t;return `<span class="sc ${p>=.75?"hi":p>=.5?"mid":"lo"}">${v}/${t}</span>`;
+}
+function ago(ms){
+  if(!ms)return "–";const d=(Date.now()-ms)/864e5;
+  if(d<1/24)return "Baru tadi";if(d<1)return Math.floor(d*24)+" jam lalu";if(d<2)return "Semalam";
+  return new Date(ms).toLocaleDateString("ms-MY",{day:"numeric",month:"short"});
+}
+function m1score(m){return (m.mods.includes("1")?1:0)+["bukan","jenis","akta","susun"].reduce((s,k)=>s+(m.best[k]||0)/TOT[k],0)}
+function drawGuru(){
+  const k=$("#fKelas").value,q=$("#fCari").value.trim().toLowerCase(),srt=$("#fSusun").value;
+  let list=GDATA.filter(m=>(!k||m.kelas===k)&&(!q||m.nama.toLowerCase().includes(q)));
+  const by={nama:(a,b)=>a.nama.localeCompare(b.nama),xp:(a,b)=>b.xp-a.xp,aktif:(a,b)=>(b.aktif||0)-(a.aktif||0),m1:(a,b)=>m1score(b)-m1score(a)};
+  list.sort(by[srt]);
+  const base=GDATA.filter(m=>!k||m.kelas===k);
+  $("#tJumlah").textContent=base.length;
+  $("#tM1").textContent=base.filter(m=>m.mods.includes("1")).length;
+  $("#tXp").textContent=base.length?Math.round(base.reduce((s,m)=>s+m.xp,0)/base.length):0;
+  $("#tAktif").textContent=base.filter(m=>m.aktif&&Date.now()-m.aktif<7*864e5).length;
+  $("#gBody").innerHTML=list.length?list.map(m=>`<tr tabindex="0" data-id="${esc(m.id)}">
+    <td><b>${esc(m.nama)}</b>${m.adaPin?"":` <span class="pill warn">Belum ada PIN</span>`}</td><td>${esc(m.kelas)}</td>
+    <td class="num"><b>${m.xp}</b></td><td>${LEVELS[lvlOf(m.xp)][1]}</td>
+    <td><div class="mdots">${[1,2,3,4,5].map(i=>`<i class="${m.mods.includes(String(i))?"on":""}">${i}</i>`).join("")}</div></td>
+    ${GAME_ORDER.map(g=>`<td class="num">${scoreCell(m,g)}</td>`).join("")}
+    <td>${ago(m.aktif)}</td></tr>`).join(""):`<tr><td colspan="13" class="empty-state">${GDATA.length?"Tiada murid sepadan dengan carian.":"Belum ada murid berdaftar. Kongsikan pautan laman ini kepada murid PRS."}</td></tr>`;
+  $$("#gBody tr[data-id]").forEach(tr=>{const f=()=>detail(GDATA.find(m=>m.id===tr.dataset.id));tr.onclick=f;tr.onkeydown=e=>{if(e.key==="Enter")f()}});
+}
+function lvlOf(xp){let i=0;LEVELS.forEach((l,k)=>{if(xp>=l[0])i=k});return i}
+function detail(m){
+  GSEL=m.id;const el=$("#gDetail");el.hidden=false;el.className="detail";
+  const games=Object.entries(GAMES).map(([k,v])=>`<div>${v.name}<b>${m.best[k]!=null?m.best[k]+"/"+TOT[k]:"Belum main"}</b>${m.tries[k]?m.tries[k]+" kali dimainkan":""}</div>`).join("");
+  el.innerHTML=`<div class="detail-head"><div><span class="pill">${esc(m.kelas)}</span><h3>${esc(m.nama)}</h3>
+      <p class="muted" style="font-size:14px">${m.xp} XP · Tahap ${lvlOf(m.xp)+1} ${LEVELS[lvlOf(m.xp)][1]} · Didaftar ${m.didaftar?new Date(m.didaftar).toLocaleDateString("ms-MY"):"–"} · Aktif ${ago(m.aktif)}</p></div>
+      <button class="out" id="dClose">Tutup</button></div>
+    <div class="dgrid"><div>Modul selesai<b>${m.mods.length?m.mods.join(", "):"Tiada"}</b></div>${games}</div>
+    <div><b style="font-family:var(--display)">Lencana:</b> ${m.badges.length?m.badges.map(b=>esc((BADGES.find(x=>x.id===b)||{}).name||b)).join(", "):"Belum ada"}</div>
+    <div class="quote"><b style="font-family:var(--display)">Suara hati:</b> ${m.suara?esc(m.suara):"<span class='muted'>Belum ditulis</span>"}</div>
+    <div class="actions"><button id="dReset">Reset PIN murid</button><button class="danger" id="dDel">Padam rekod</button></div>
+    <p class="err" id="dMsg"></p>`;
+  $("#dClose").onclick=()=>{el.hidden=true;GSEL=null};
+  arm($("#dReset"),"Sahkan reset PIN",async()=>{await api("apiGuruResetPin",GPIN,m.id);toast("PIN direset. "+m.nama.split(" ")[0]+" akan cipta PIN baharu semasa log masuk.");await loadGuru()});
+  arm($("#dDel"),"Sahkan: padam terus",async()=>{await api("apiGuruPadam",GPIN,m.id);toast("Rekod "+m.nama+" dipadam.");GSEL=null;el.hidden=true;await loadGuru()});
+  el.scrollIntoView({block:"nearest"});
+}
+function arm(btn,label,fn){
+  const orig=btn.textContent;let t=null;
+  btn.onclick=async()=>{
+    if(!btn.classList.contains("armed")){btn.classList.add("armed");btn.textContent=label;t=setTimeout(()=>{btn.classList.remove("armed");btn.textContent=orig},4000);return}
+    clearTimeout(t);btn.disabled=true;
+    try{await fn()}catch(e){$("#dMsg").textContent=e.message;btn.disabled=false;btn.classList.remove("armed");btn.textContent=orig}
+  };
+}
+
+/* ===== ilustrasi ===== */
+function drawArt(c){
+  const x=c.getContext("2d");if(!x)return;
+  if(!x.roundRect)x.roundRect=function(a,b,w,h){this.rect(a,b,w,h)};
+  const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function frame(t){
+    x.clearRect(0,0,400,300);
+    const bob=still?0:Math.sin(t/600)*4;
+    x.fillStyle=tok("--surface");x.beginPath();x.ellipse(200,270,170,22,0,0,7);x.fill();
+    function kid(cx,col,dy,flip){
+      x.fillStyle=col;x.beginPath();x.roundRect(cx-34,150+dy,68,110,30);x.fill();
+      x.fillStyle="#f2c79d";x.beginPath();x.arc(cx,118+dy,36,0,7);x.fill();
+      x.fillStyle="#3b2a20";x.beginPath();x.arc(cx,108+dy,37,Math.PI,0);x.fill();
+      x.fillStyle="#173a3a";x.beginPath();x.arc(cx-12+flip*3,120+dy,4,0,7);x.arc(cx+12+flip*3,120+dy,4,0,7);x.fill();
+      x.strokeStyle="#173a3a";x.lineWidth=3;x.beginPath();x.arc(cx+flip*3,128+dy,10,.2,Math.PI-.2);x.stroke();
+    }
+    kid(130,tok("--teal"),bob,1);kid(270,tok("--coral"),-bob,-1);
+    x.fillStyle=tok("--sun");x.beginPath();x.roundRect(160,24+bob,100,48,18);x.fill();
+    x.beginPath();x.moveTo(180,70+bob);x.lineTo(160,92+bob);x.lineTo(200,70+bob);x.fill();
+    x.fillStyle="#173a3a";[188,210,232].forEach((px,i)=>{x.beginPath();x.arc(px,48+bob+(still?0:Math.sin(t/250+i)*3),5,0,7);x.fill()});
+    x.fillStyle=tok("--plum");
+    const hy=still?150:200-((t/30)%120);x.globalAlpha=Math.max(0,hy/200);
+    x.beginPath();x.arc(196,hy,6,0,7);x.arc(206,hy,6,0,7);x.moveTo(190,hy+2);x.lineTo(201,hy+15);x.lineTo(212,hy+2);x.fill();x.globalAlpha=1;
+    if(!still&&c.offsetParent!==null)requestAnimationFrame(frame);else if(!still)setTimeout(()=>requestAnimationFrame(frame),1000);
+  }
+  requestAnimationFrame(frame);
+}
+$$("canvas.art").forEach(drawArt);
+
+loadKelas();
+})();
+
+</script>
+</body>
+</html>
