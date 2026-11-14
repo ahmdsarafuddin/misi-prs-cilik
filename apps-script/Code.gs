@@ -15,6 +15,7 @@ var GAMES = [
   ['jenis',  'Teka Jenis Buli (/9)', 9],
   ['akta',   'Apa Kata Akta (/10)', 10],
   ['susun',  'Susun Peta Tindakan (/2)', 2],
+  ['mitos',  'Mitos atau Fakta (/8)', 8],
   ['kuiz',   'Kuiz Kilat PRS (/8)', 8],
   ['bantu',  'Bantu atau Rujuk (/6)', 6],
   ['dengar', 'Pendengar Hebat (/8)', 8]
@@ -30,7 +31,7 @@ HEAD.forEach(function (h, i) { C[h] = i; });
 var LEVELS = [[0, 'Perintis'], [80, 'Pendengar'], [200, 'Penolong'], [360, 'Pembimbing'], [560, 'PRS Bintang']];
 var BADGE_NAMES = {
   perisai: 'Perisai Antibuli', detektif: 'Detektif Buli', jenis: 'Pengenal Jenis', akta: 'Pakar Akta 876',
-  peta: 'Peta Tindakan', ilmu: 'Ulat Buku PRS', kuiz: 'Otak Kilat', bantu: 'Penjaga Selamat',
+  peta: 'Peta Tindakan', mitos: 'Pemburu Mitos', ilmu: 'Ulat Buku PRS', kuiz: 'Otak Kilat', bantu: 'Penjaga Selamat',
   dengar: 'Telinga Emas', bintang: 'PRS Bintang'
 };
 
@@ -47,7 +48,7 @@ function doGet(e) {
 
 /* ---------- API untuk laman di GitHub Pages ---------- */
 
-var VERSI = '1.2';
+var VERSI = '1.3';
 
 // Hanya fungsi dalam senarai ini boleh dipanggil dari luar.
 var API_DIBENARKAN = {
@@ -91,16 +92,46 @@ function sheet_() {
   if (!sh) {
     sh = ss.insertSheet(SHEET_MURID, 0);
   }
-  var first = sh.getRange(1, 1, 1, HEAD.length).getValues()[0];
-  if (first.join('') === '' || first[0] !== HEAD[0]) {
-    if (first.join('') !== '') sh.insertRowBefore(1);
-    sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD]).setFontWeight('bold').setBackground('#d8f1ee');
-    sh.setFrozenRows(1);
-    sh.setFrozenColumns(3);
-    // sembunyikan lajur teknikal
-    sh.hideColumns(C['PIN (hash)'] + 1, 3);
+  if (sh.getMaxColumns() < HEAD.length) {
+    sh.insertColumnsAfter(sh.getMaxColumns(), HEAD.length - sh.getMaxColumns());
+  }
+  var width = Math.max(HEAD.length, sh.getLastColumn());
+  var first = sh.getRange(1, 1, 1, width).getValues()[0];
+  var same = HEAD.every(function (h, i) { return first[i] === h; });
+  if (same) return sh;
+  if (first[0] === HEAD[0]) {
+    pindahLajur_(sh, first);          // tajuk lama: susun semula lajur tanpa kehilangan data
+  } else {
+    if (first.join('') !== '') sh.insertRowBefore(1);   // senarai nama yang ditampal guru tanpa tajuk
+    tulisTajuk_(sh);
   }
   return sh;
+}
+
+function tulisTajuk_(sh) {
+  sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD]).setFontWeight('bold').setBackground('#d8f1ee');
+  sh.setFrozenRows(1);
+  sh.setFrozenColumns(3);
+  try { sh.showColumns(1, sh.getMaxColumns()); } catch (e) {}
+  sh.hideColumns(C['PIN (hash)'] + 1, 3);   // sembunyikan lajur teknikal
+}
+
+/** Susun semula data mengikut tajuk baharu apabila lajur ditambah dalam versi baharu. */
+function pindahLajur_(sh, oldHead) {
+  var n = sh.getLastRow();
+  if (n >= 2) {
+    var w = oldHead.length;
+    var data = sh.getRange(2, 1, n - 1, w).getValues();
+    var idx = {};
+    oldHead.forEach(function (h, i) { if (h !== '' && idx[h] == null) idx[h] = i; });
+    var out = data.map(function (r) {
+      return HEAD.map(function (h) { return idx[h] != null ? r[idx[h]] : ''; });
+    });
+    if (w > HEAD.length) sh.getRange(2, HEAD.length + 1, n - 1, w - HEAD.length).clearContent();
+    sh.getRange(2, 1, n - 1, HEAD.length).setValues(out);
+  }
+  if (oldHead.length > HEAD.length) sh.getRange(1, HEAD.length + 1, 1, oldHead.length - HEAD.length).clearContent();
+  tulisTajuk_(sh);
 }
 
 function salt_() {

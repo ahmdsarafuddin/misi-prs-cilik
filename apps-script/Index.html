@@ -126,11 +126,17 @@ nav.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--
 .check .row button.right{border-color:var(--ok)} .check .row button.wrong{border-color:var(--bad)}
 .check .say{font-size:15px}
 
-.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:700px){.facts{grid-template-columns:1fr}}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+
 .fact{background:var(--bg);border-radius:16px;padding:12px 14px;display:grid;gap:2px}
 .fact b{font-family:var(--display);font-size:22px;color:var(--navy);font-variant-numeric:tabular-nums}
 .fact span{font-size:14px}
+.sub{font-size:20px}
+.where{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:700px){.where{grid-template-columns:1fr}}
+.where div{border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:15px;display:grid;gap:4px;align-content:start}
+.where strong{font-family:var(--display);font-size:18px}
+.where .ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:var(--display);font-weight:800;color:var(--onaccent)}
 .duty{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 @media (max-width:560px){.duty{grid-template-columns:1fr}}
 .duty div{border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-size:15px}
@@ -379,7 +385,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
     <p class="info" id="demoNote" hidden>Mod cubaan: laman ini belum disambungkan ke Google Sheet, jadi kemajuan tidak disimpan.
       <button class="primary" id="demoBtn" type="button" style="margin-top:8px;width:100%">Cuba tanpa log masuk</button></p>
     <button class="linkbtn" id="toGuru" type="button">Saya guru: buka papan pemuka</button>
-    <p class="ver">Versi 1.2 · 14 Nov 2026</p>
+    <p class="ver">Versi 1.3 · 15 Nov 2026</p>
   </div>
 </div>
 
@@ -479,30 +485,90 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
         <div class="fact"><b>Akta 876</b><span>Nombor rasmi undang-undang ini</span></div>
         <div class="fact"><b>13 Jan 2026</b><span>Mendapat Perkenan Diraja</span></div>
         <div class="fact"><b>23 Jan 2026</b><span>Disiarkan dalam Warta</span></div>
+        <div class="fact"><b>16 Jun 2026</b><span>Mula berkuat kuasa, dan Tribunal Antibuli dilancarkan</span></div>
       </div>
-      <h4 style="font-size:20px">Siapa yang dilindungi?</h4>
+      <h4 class="sub">Siapa yang dilindungi?</h4>
       <p>Mangsa di bawah Akta ini ialah kanak-kanak di bawah umur <strong>18 tahun</strong>, pelajar di institusi pendidikan, dan kanak-kanak di institusi jagaan. Yang boleh membuat aduan ialah <strong>mangsa sendiri, atau ibu, bapa atau penjaganya</strong>.</p>
-      <h4 style="font-size:20px">Apa yang sekolah wajib sediakan?</h4>
+      <p class="muted" style="font-size:15px">Sekolah yang terlibat: sekolah kerajaan, sekolah bantuan kerajaan, sekolah swasta, Maktab Rendah Sains MARA dan Maktab Tentera Diraja.</p>
+      <h4 class="sub">Apa yang sekolah wajib sediakan?</h4>
       <div class="duty">
-        <div><strong>Jawatankuasa antibuli</strong>Untuk mencegah buli dan mengurus aduan.</div>
+        <div><strong>Jawatankuasa antibuli</strong>Menasihati dan membantu sekolah, serta menerima dan mengurus aduan buli.</div>
         <div><strong>Saluran lapor yang selamat</strong>Mudah digunakan murid, mesra kanak-kanak dan dirahsiakan.</div>
         <div><strong>Kaunseling dan sokongan</strong>Untuk membantu mangsa dan menguruskan kes.</div>
         <div><strong>Latihan</strong>Tentang cara mencegah dan mengurus buli, seperti latihan PRS ini.</div>
       </div>
-      <div class="law"><b>Seksyen 2, 7 dan 8 Akta 876</b>Mentakrifkan mangsa dan pengadu, serta mewajibkan institusi pendidikan menubuhkan jawatankuasa, saluran laporan yang rahsia, perkhidmatan kaunseling dan latihan.</div>
+      <h4 class="sub">Siapa lagi yang menjaga kita?</h4>
+      <div class="duty">
+        <div><strong>Kementerian</strong>Boleh mengaudit sekolah untuk memastikan sekolah menjalankan kewajipan antibuli.</div>
+        <div><strong>Pesuruhjaya Kanak-Kanak (SUHAKAM)</strong>Memberi pendidikan dan kesedaran tentang buli, dan mencadangkan cara mencegahnya kepada Kerajaan.</div>
+      </div>
+      <div class="law"><b>Seksyen 2, 7, 8 dan 48, serta Jadual Pertama Akta 876</b>Mentakrifkan mangsa dan pengadu, mewajibkan sekolah menubuhkan jawatankuasa, saluran laporan yang rahsia, kaunseling dan latihan, serta memberi peranan kepada Ketua Pesuruhjaya Kanak-Kanak.</div>
+      <div class="check" data-ans="1">
+        <small>Semak faham</small>
+        <p>Antara berikut, yang manakah tugas jawatankuasa antibuli sekolah?</p>
+        <div class="row"><button data-o="0">Menghukum murid di perhimpunan</button><button data-o="1">Menerima dan mengurus aduan buli</button><button data-o="2">Menjual barang di kantin</button></div>
+        <p class="say" hidden data-ok="Betul! Jawatankuasa menasihati, membantu dan menerima aduan buli." data-no="Belum tepat. Seksyen 8 menyebut jawatankuasa menasihati, membantu dan menerima aduan buli."></p>
+      </div>
     </section>
 
     <!-- step 5 -->
-    <section class="step" data-step="Tribunal & akibat" hidden>
-      <h4>Tribunal Antibuli dan akibat kepada pembuli</h4>
-      <p class="lead">Akta ini menubuhkan <strong>Tribunal bagi Antibuli</strong>, iaitu badan khas yang mendengar aduan buli. Begini laluan sesuatu aduan buli yang berlaku di sekolah:</p>
+    <section class="step" data-step="Buli di mana-mana" hidden>
+      <h4>Buli tidak berhenti di pagar sekolah</h4>
+      <p class="lead">Akta 876 melindungi kanak-kanak walaupun buli berlaku di luar sekolah atau di alam maya.</p>
+      <div class="where">
+        <div><span class="ico" style="background:var(--teal)">S</span><strong>Di sekolah</strong>Di kelas, kantin, tandas atau asrama. Aduan dibuat kepada sekolah dahulu.</div>
+        <div><span class="ico" style="background:var(--coral)">L</span><strong>Di luar sekolah</strong>Di taman, dalam van atau semasa pulang. Ibu bapa boleh terus mengadu kepada Tribunal.</div>
+        <div><span class="ico" style="background:var(--navy)">T</span><strong>Dalam talian</strong>Melalui WhatsApp, media sosial atau permainan dalam talian, walaupun di rumah pada waktu malam.</div>
+      </div>
+      <h4 class="sub">Buli siber boleh dipadam</h4>
+      <p>Tribunal boleh memerintahkan pembuli <strong>memadam kandungan buli</strong> daripada media sosial dan telefon. Tribunal juga boleh merujuk kes kepada <strong>Suruhanjaya Komunikasi dan Multimedia Malaysia (MCMC)</strong> untuk tindakan lanjut.</p>
+      <div class="law"><b>Seksyen 29(2) dan 43 Akta 876</b>Tribunal boleh mendengar aduan buli yang berlaku di luar pengawasan sekolah, dan aduan melibatkan kanak-kanak yang tidak bersekolah.</div>
+      <div class="check" data-ans="0">
+        <small>Semak faham</small>
+        <p>Pada malam Sabtu, Aiman diejek dan diugut dalam kumpulan WhatsApp kelas. Adakah Akta 876 melindungi Aiman?</p>
+        <div class="row"><button data-o="0">Ya, buli dalam talian juga dilindungi</button><button data-o="1">Tidak, kerana bukan waktu sekolah</button></div>
+        <p class="say" hidden data-ok="Tepat! Buli melalui komunikasi digital termasuk dalam Akta, walaupun di luar waktu sekolah." data-no="Belum tepat. Buli melalui komunikasi digital termasuk dalam Akta, walaupun berlaku di rumah."></p>
+      </div>
+    </section>
+
+    <!-- step 6 -->
+    <section class="step" data-step="Berdamai atau Tribunal?" hidden>
+      <h4>Berdamai atau ke Tribunal?</h4>
+      <p class="lead">Untuk buli yang berlaku di sekolah, aduan dibuat kepada <strong>sekolah dahulu</strong>. Tribunal ialah pilihan seterusnya.</p>
       <div class="path">
         <div><em>Langkah 1</em><strong>Aduan ke sekolah</strong>Mangsa atau ibu bapa mengadu kepada jawatankuasa antibuli sekolah.</div>
-        <div><em>Langkah 2</em><strong>Ke Tribunal</strong>Jika sekolah tidak bertindak dengan wajar, atau sekolah merujuk dengan izin pengadu.</div>
-        <div><em>Langkah 3</em><strong>Pendengaran</strong>Tertutup, mesra kanak-kanak, panel 3 orang termasuk sekurang-kurangnya seorang wanita.</div>
-        <div><em>Langkah 4</em><strong>Award</strong>Keputusan dibuat tanpa lengah, jika boleh dalam 60 hari.</div>
+        <div><em>Langkah 2</em><strong>Cuba berdamai</strong>Jawatankuasa boleh menjalankan pengantaraan.</div>
+        <div><em>Langkah 3</em><strong>Ke Tribunal</strong>Jika sekolah tidak bertindak dengan wajar, atau sekolah merujuk dengan izin pengadu.</div>
+        <div><em>Langkah 4</em><strong>Keputusan</strong>Tribunal membuat keputusan (award), jika boleh dalam 60 hari.</div>
       </div>
-      <h4 style="font-size:20px">Tribunal boleh memerintahkan pembuli…</h4>
+      <h4 class="sub">Apa itu pengantaraan?</h4>
+      <p><strong>Pengantaraan</strong> bermaksud kedua-dua pihak berbincang dengan bantuan orang tengah untuk mencapai penyelesaian yang dipersetujui. Tribunal mengutamakan cara ini, tetapi hanya jika:</p>
+      <div class="duty">
+        <div><strong>Semua pihak bersetuju</strong>Tiada sesiapa boleh dipaksa berdamai.</div>
+        <div><strong>Selamat untuk mangsa</strong>Keselamatan dan kesejahteraan kanak-kanak diutamakan.</div>
+      </div>
+      <p>Jika berjaya, persetujuan itu direkodkan dan berkuat kuasa seperti keputusan Tribunal. Jika tidak berjaya, Tribunal akan membuat keputusan.</p>
+      <div class="pen" style="background:var(--teal-soft)"><strong>Suara mangsa didengar</strong>Sekolah hanya boleh merujuk aduan kepada Tribunal dengan izin mangsa atau ibu bapanya.</div>
+      <div class="law"><b>Seksyen 8, 29 dan 39 Akta 876</b>Aduan ke Tribunal juga boleh dibuat secara dalam talian oleh ibu bapa melalui portal e-TAB (tab.bheuu.gov.my).</div>
+      <div class="check" data-ans="1">
+        <small>Semak faham</small>
+        <p>Bolehkah mangsa dipaksa berdamai dengan pembuli?</p>
+        <div class="row"><button data-o="0">Boleh, jika guru suruh</button><button data-o="1">Tidak, semua pihak mesti bersetuju</button></div>
+        <p class="say" hidden data-ok="Betul! Pengantaraan hanya dijalankan dengan persetujuan semua pihak dan jika selamat untuk mangsa." data-no="Belum tepat. Seksyen 39 menyebut pengantaraan memerlukan persetujuan semua pihak."></p>
+      </div>
+    </section>
+
+    <!-- step 7 -->
+    <section class="step" data-step="Di Tribunal" hidden>
+      <h4>Tribunal Antibuli: mesra kanak-kanak</h4>
+      <p class="lead">Tribunal dianggotai pegawai kehakiman, peguam berpengalaman, dan pakar kanak-kanak serta psikologi. Kanak-kanak tidak perlu takut. Tekan setiap kad.</p>
+      <div class="flips">
+        <button class="flip" aria-pressed="false" data-ex="Orang awam tidak boleh masuk. Nama dan gambar kanak-kanak tidak boleh disiarkan."><span class="ico" style="background:var(--navy)">1</span><strong>Tertutup</strong><span>Pendengaran tidak dibuka kepada orang awam.</span><span class="tap">Tekan untuk tahu lagi</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Kanak-kanak berhak ditemani dan dibantu oleh ibu, bapa atau penjaga."><span class="ico" style="background:var(--teal)">2</span><strong>Ditemani</strong><span>Ibu bapa boleh duduk bersama.</span><span class="tap">Tekan untuk tahu lagi</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Keterangan boleh diberi melalui video secara langsung, atau di sebalik pengadang supaya tidak perlu bertentang mata dengan pembuli."><span class="ico" style="background:var(--plum)">3</span><strong>Video atau pengadang</strong><span>Tidak perlu berdepan pembuli.</span><span class="tap">Tekan untuk tahu lagi</span></button>
+        <button class="flip" aria-pressed="false" data-ex="Prosiding tidak formal. Tribunal boleh melantik ahli psikologi atau pakar untuk membantu kanak-kanak bercakap."><span class="ico" style="background:var(--coral)">4</span><strong>Bahasa mudah</strong><span>Kanak-kanak mesti faham apa yang berlaku.</span><span class="tap">Tekan untuk tahu lagi</span></button>
+      </div>
+      <h4 class="sub">Tribunal boleh memerintahkan pembuli…</h4>
       <div class="orders">
         <div><strong>Memohon maaf</strong>kepada mangsa.</div>
         <div><strong>Memadam kandungan buli</strong>daripada media sosial dan peranti.</div>
@@ -511,9 +577,9 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
         <div><strong>Menghadiri program</strong>yang ditetapkan oleh Tribunal.</div>
         <div><strong>Ibu bapa hadir kaunseling</strong>bersama anak yang membuli.</div>
       </div>
-      <div class="pen"><strong>Jika perintah tidak dipatuhi dalam 30 hari</strong>Itu suatu kesalahan jenayah. Hukumannya boleh termasuk denda dan penjara sehingga 2 tahun.</div>
+      <div class="pen"><strong>Keputusan Tribunal muktamad</strong>Ia sama seperti perintah mahkamah. Jika tidak dipatuhi dalam 30 hari, itu suatu kesalahan jenayah: denda dan penjara sehingga 2 tahun, ditambah denda sehingga RM1,000 bagi setiap hari kesalahan berterusan.</div>
       <div class="pen" style="background:var(--navy-soft)"><strong>Identiti kanak-kanak dilindungi</strong>Sesiapa yang menyiarkan maklumat yang boleh mengenal pasti kanak-kanak dalam kes Tribunal boleh didenda sehingga RM50,000 atau penjara sehingga 2 tahun. Jadi, jangan sebarkan nama atau gambar mangsa!</div>
-      <div class="law"><b>Seksyen 25, 29, 35, 37, 42 hingga 44 dan 50 Akta 876</b>Mangsa juga masih boleh membuat laporan polis bagi kesalahan berkaitan buli (seksyen 54).</div>
+      <div class="law"><b>Seksyen 26, 31, 33, 36, 37, 43 hingga 45 dan 50 Akta 876</b>Mangsa juga masih boleh membuat laporan polis bagi kesalahan berkaitan buli (seksyen 54).</div>
       <div class="check" data-ans="2">
         <small>Semak faham</small>
         <p>Rizal (11 tahun) diperintah membayar pampasan kerana membuli. Siapa yang membayar?</p>
@@ -522,7 +588,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
       </div>
     </section>
 
-    <!-- step 6 -->
+    <!-- step 8 -->
     <section class="step" data-step="Peranan PRS" hidden>
       <h4>Peranan PRS apabila berlaku buli</h4>
       <p class="lead">PRS bukan hakim dan bukan penghukum. Tugas PRS ialah menjadi kawan yang membantu dengan cara yang betul, selamat dan beretika.</p>
@@ -534,8 +600,9 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
       </div>
       <div class="dodont">
         <div class="y"><h5>PRS buat</h5><ul><li>Dengar tanpa menyampuk</li><li>Katakan "Ini bukan salah awak"</li><li>Temani mangsa berjumpa guru</li><li>Simpan bukti seperti tangkap layar, jika selamat</li></ul></div>
-        <div class="n"><h5>PRS jangan buat</h5><ul><li>Bergaduh atau membalas dengan pembuli</li><li>Menyebar gambar atau video buli</li><li>Berjanji simpan rahsia jika mangsa dalam bahaya</li><li>Menyalahkan mangsa</li></ul></div>
+        <div class="n"><h5>PRS jangan buat</h5><ul><li>Bergaduh atau membalas dengan pembuli</li><li>Menyebar gambar atau video buli</li><li>Berjanji simpan rahsia jika mangsa dalam bahaya</li><li>Menyalahkan mangsa</li><li>Membuat aduan palsu</li></ul></div>
       </div>
+      <div class="pen" style="background:var(--sun-soft)"><strong>Jujur itu penting</strong>Tribunal boleh menolak aduan yang remeh atau menyusahkan (seksyen 43(4)). Laporkan perkara yang benar sahaja, dan jangan gunakan aduan untuk membalas dendam.</div>
       <div class="help"><strong>Talian Kasih 15999</strong> · Kalau kamu sendiri dibuli, beritahu ibu bapa, guru kelas atau guru kaunseling. Kamu juga boleh menghubungi Talian Kasih.</div>
       <div class="heart">
         <label for="suara">Suara hati: tulis satu ayat sokongan kepada mangsa buli</label>
@@ -666,8 +733,8 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
       <table>
         <thead>
           <tr><th rowspan="2">Nama</th><th rowspan="2">Kelas</th><th rowspan="2" class="num">XP</th><th rowspan="2">Tahap</th><th rowspan="2">Modul 1–5</th>
-            <th colspan="4" class="grp">Modul 1: markah terbaik</th><th colspan="3" class="grp">Modul 2–5</th><th rowspan="2">Aktif terakhir</th></tr>
-          <tr><th class="num">Buli?</th><th class="num">Jenis</th><th class="num">Akta</th><th class="num">Susun</th><th class="num">Kuiz</th><th class="num">Bantu</th><th class="num">Dengar</th></tr>
+            <th colspan="5" class="grp">Modul 1: markah terbaik</th><th colspan="3" class="grp">Modul 2–5</th><th rowspan="2">Aktif terakhir</th></tr>
+          <tr><th class="num">Buli?</th><th class="num">Jenis</th><th class="num">Akta</th><th class="num">Susun</th><th class="num">Mitos</th><th class="num">Kuiz</th><th class="num">Bantu</th><th class="num">Dengar</th></tr>
         </thead>
         <tbody id="gBody"></tbody>
       </table>
@@ -798,10 +865,10 @@ $$(".key").forEach(k=>k.onclick=()=>{
   if(k.classList.contains("open"))return;k.classList.add("open");
   k.querySelector("strong").textContent=k.dataset.k;k.querySelector(".hid").outerHTML=`<span>${k.dataset.t}</span>`;
 });
-$$(".flip").forEach(f=>{const desc=f.querySelector("span:not(.ico):not(.tap)").textContent;f.onclick=()=>{
+$$(".flip").forEach(f=>{const desc=f.querySelector("span:not(.ico):not(.tap)").textContent,tap=f.querySelector(".tap").textContent,lbl=f.dataset.lbl!=null?f.dataset.lbl:(/contoh/i.test(tap)?"<em>Contoh:</em> ":"");f.onclick=()=>{
   const on=f.getAttribute("aria-pressed")!=="true";f.setAttribute("aria-pressed",on);
-  f.querySelector("span:not(.ico):not(.tap)").innerHTML=on?"<em>Contoh:</em> "+f.dataset.ex:desc;
-  f.querySelector(".tap").textContent=on?"Tekan untuk kembali":"Tekan untuk contoh";
+  f.querySelector("span:not(.ico):not(.tap)").innerHTML=on?lbl+f.dataset.ex:desc;
+  f.querySelector(".tap").textContent=on?"Tekan untuk kembali":tap;
 }});
 $$(".check").forEach(c=>c.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
   const ok=b.dataset.o===c.dataset.ans;c.querySelectorAll("[data-o]").forEach(x=>x.classList.remove("right","wrong"));
@@ -825,6 +892,7 @@ const BADGES=[
   {id:"jenis",name:"Pengenal Jenis",desc:"Skor 7/9 atau lebih dalam Teka Jenis Buli",c:"--plum"},
   {id:"akta",name:"Pakar Akta 876",desc:"Skor 8/10 atau lebih dalam Apa Kata Akta?",c:"--sun"},
   {id:"peta",name:"Peta Tindakan",desc:"Susun kedua-dua laluan dengan betul",c:"--teal"},
+  {id:"mitos",name:"Pemburu Mitos",desc:"Skor 7/8 atau lebih dalam Mitos atau Fakta?",c:"--coral"},
   {id:"ilmu",name:"Ulat Buku PRS",desc:"Baca Modul 2 hingga 5",c:"--teal"},
   {id:"kuiz",name:"Otak Kilat",desc:"Skor 6/8 atau lebih dalam Kuiz Kilat",c:"--sun"},
   {id:"bantu",name:"Penjaga Selamat",desc:"Semua betul dalam Bantu atau Rujuk",c:"--coral"},
@@ -850,7 +918,9 @@ const BUKAN=[
  {s:"Ketua kelas menegur kawan yang bising dengan sopan supaya kelas senyap semasa guru tiada.",a:1,e:"Bukan buli. Teguran yang sopan bukan bertujuan menyakiti sesiapa."},
  {s:"Danish berkali-kali menyorok dan mengoyak buku latihan kawannya.",a:0,e:"Buli fizikal: merosakkan barang kepunyaan mangsa secara berulang."},
  {s:"Pasukan Hakim kalah dalam perlawanan bola sepak dan dia berasa sedih.",a:1,e:"Bukan buli. Kalah dalam permainan yang adil ialah perkara biasa."},
- {s:"Beberapa murid sering mengejek kawan mereka kerana agama dan kaumnya.",a:0,e:"Buli diskriminasi berdasarkan agama dan kaum."}
+ {s:"Beberapa murid sering mengejek kawan mereka kerana agama dan kaumnya.",a:0,e:"Buli diskriminasi berdasarkan agama dan kaum."},
+ {s:"Dalam van sekolah semasa pulang, Haris selalu ditolak dan topinya dirampas oleh murid yang lebih besar.",a:0,e:"Buli fizikal di luar sekolah. Akta 876 tetap melindungi Haris."},
+ {s:"Setiap malam, beberapa murid menghantar pesanan mengugut kepada Lina melalui permainan dalam talian.",a:0,e:"Buli siber. Walaupun berlaku di rumah, ia tetap buli menurut Akta 876."}
 ];
 const JENIS_OPT=["Fizikal","Lisan","Sosial","Diskriminasi","Siber"];
 const JENIS=[
@@ -874,7 +944,25 @@ const AKTA=[
  {q:"Yang manakah perintah yang BOLEH dibuat oleh Tribunal kepada pembuli?",o:["Menukar nama","Memohon maaf dan memadam kandungan buli di media sosial","Berpindah ke negara lain"],a:1,e:"Seksyen 43 membenarkan perintah memohon maaf dan memadam kandungan buli."},
  {q:"Jika pembuli masih kanak-kanak dan diperintah membayar pampasan, siapakah yang membayar?",o:["Ibu bapa atau penjaganya","Kawan-kawan pembuli","Tiada sesiapa"],a:0,e:"Seksyen 43(1)(d) dan (e): ibu, bapa atau penjaga yang membayar."},
  {q:"Berapakah pampasan maksimum yang boleh diperintahkan oleh Tribunal?",o:["RM2,500","RM25,000","RM250,000"],a:2,e:"Seksyen 43(1)(e): pampasan tidak melebihi dua ratus lima puluh ribu ringgit."},
- {q:"Bolehkah kamu menyiarkan nama atau gambar kanak-kanak yang terlibat dalam kes Tribunal?",o:["Boleh, supaya semua orang tahu","Boleh, jika ramai yang suka","Tidak, itu satu kesalahan"],a:2,e:"Seksyen 50: denda sehingga RM50,000 atau penjara sehingga 2 tahun, atau kedua-duanya."}
+ {q:"Bolehkah kamu menyiarkan nama atau gambar kanak-kanak yang terlibat dalam kes Tribunal?",o:["Boleh, supaya semua orang tahu","Boleh, jika ramai yang suka","Tidak, itu satu kesalahan"],a:2,e:"Seksyen 50: denda sehingga RM50,000 atau penjara sehingga 2 tahun, atau kedua-duanya."},
+ {q:"Bilakah Akta Antibuli 2026 mula berkuat kuasa?",o:["1 Januari 2026","16 Jun 2026","31 Ogos 2026"],a:1,e:"Akta 876 berkuat kuasa pada 16 Jun 2026, hari Tribunal Antibuli dilancarkan."},
+ {q:"Danish dibuli melalui permainan dalam talian ketika di rumah. Adakah Akta 876 melindunginya?",o:["Ya, buli dalam talian juga dilindungi","Tidak, hanya buli di sekolah","Hanya jika ada saksi"],a:0,e:"Seksyen 3(2)(e) dan 29(2): buli melalui komunikasi digital dan di luar sekolah juga dilindungi."},
+ {q:"Apakah maksud pengantaraan?",o:["Hukuman yang berat","Berbincang dengan bantuan orang tengah untuk berdamai","Pertandingan bahas"],a:1,e:"Seksyen 39: Tribunal mengutamakan penyelesaian yang dipersetujui, jika semua pihak setuju dan keadaan selamat."},
+ {q:"Bolehkah sekolah merujuk aduan ke Tribunal tanpa izin mangsa atau ibu bapanya?",o:["Boleh, bila-bila masa","Tidak, perlu izin pengadu","Boleh, jika guru besar mahu"],a:1,e:"Seksyen 8(3): jawatankuasa hanya boleh merujuk aduan dengan keizinan pengadu."},
+ {q:"Bagaimanakah kanak-kanak boleh memberi keterangan tanpa berdepan pembuli?",o:["Melalui video atau di sebalik pengadang","Menjerit dari luar bilik","Tidak boleh sama sekali"],a:0,e:"Seksyen 31(4)(d): keterangan boleh diberi melalui video secara langsung atau dengan pengadang."},
+ {q:"Apakah yang boleh berlaku kepada aduan yang palsu atau remeh?",o:["Tribunal boleh menolaknya","Pengadu mendapat hadiah","Diterima tanpa disemak"],a:0,e:"Seksyen 43(4): Tribunal boleh menolak aduan yang remeh atau menyusahkan. Laporkan perkara yang benar sahaja."}
+];
+const MITOS=[
+ {s:"Buli hanya dikira jika berlaku berkali-kali.",a:1,e:"Mitos. Satu kejadian yang serius juga dikira buli (seksyen 3(1))."},
+ {s:"Buli melalui WhatsApp pada waktu malam juga termasuk dalam Akta 876.",a:0,e:"Fakta. Buli melalui komunikasi digital termasuk dalam Akta (seksyen 3(2)(e))."},
+ {s:"Ibu bapa boleh diperintah membayar pampasan jika anak mereka membuli.",a:0,e:"Fakta. Jika pembuli kanak-kanak, ibu bapa atau penjaga yang membayar (seksyen 43)."},
+ {s:"Pendengaran Tribunal dibuka kepada orang awam dan wartawan.",a:1,e:"Mitos. Semua pendengaran Tribunal tertutup kepada orang awam (seksyen 37)."},
+ {s:"Kanak-kanak boleh ditemani ibu bapa semasa pendengaran Tribunal.",a:0,e:"Fakta. Kanak-kanak berhak ditemani dan dibantu ibu, bapa atau penjaga (seksyen 36(4))."},
+ {s:"Mengejek kawan kerana agama atau kaumnya hanyalah gurauan, bukan buli.",a:1,e:"Mitos. Memalukan seseorang kerana jantina, kaum, agama atau ketidakupayaan ialah buli (seksyen 3(2)(d))."},
+ {s:"Tribunal boleh memerintahkan pembuli memadam kandungan buli di media sosial.",a:0,e:"Fakta. Ini salah satu perintah Tribunal (seksyen 43(1)(c))."},
+ {s:"Mangsa yang membawa kes ke Tribunal tidak boleh lagi membuat laporan polis.",a:1,e:"Mitos. Pengadu masih boleh membuat laporan polis (seksyen 54)."},
+ {s:"Mangsa boleh dipaksa berdamai dengan pembuli walaupun dia tidak setuju.",a:1,e:"Mitos. Pengantaraan memerlukan persetujuan semua pihak dan mesti selamat untuk kanak-kanak (seksyen 39)."},
+ {s:"Setiap sekolah kerajaan wajib ada jawatankuasa antibuli.",a:0,e:"Fakta. Seksyen 7 dan 8 mewajibkan jawatankuasa pencegahan dan pengurusan kes buli."}
 ];
 const SUSUN=[
  {t:"Langkah PRS apabila berdepan kes buli",items:["Kenal pasti situasi buli","Beri sokongan awal kepada mangsa","Laporkan kepada guru kaunseling atau jawatankuasa antibuli","Jaga kerahsiaan maklumat mangsa"],e:"Kenal pasti, sokong, lapor, rahsiakan. Inilah peta tindakan PRS daripada modul SAFE."},
@@ -911,22 +999,24 @@ const DENGAR=[
 const GAMES={
  bukan:{grp:1,name:"Buli atau Bukan?",desc:"Kenal pasti sama ada situasi itu buli menggunakan empat kunci.",data:BUKAN,n:8,mode:"pick",prompt:"Adakah ini buli?",labels:["Buli","Bukan buli"],scene:"Situasi",badge:["detektif",7]},
  jenis:{grp:1,name:"Teka Jenis Buli",desc:"Padankan situasi dengan lima jenis buli dalam Akta 876.",data:JENIS,mode:"pick",prompt:"Apakah jenis buli ini?",labels:JENIS_OPT,scene:"Situasi",badge:["jenis",7]},
- akta:{grp:1,name:"Apa Kata Akta?",desc:"10 soalan tentang Akta Antibuli 2026 dan Tribunal.",data:AKTA,mode:"quiz",badge:["akta",8]},
+ akta:{grp:1,name:"Apa Kata Akta?",desc:"10 soalan rawak tentang Akta Antibuli 2026 dan Tribunal.",data:AKTA,n:10,mode:"quiz",badge:["akta",8]},
  susun:{grp:1,name:"Susun Peta Tindakan",desc:"Susun langkah PRS dan laluan aduan mengikut urutan.",mode:"order"},
+ mitos:{grp:1,name:"Mitos atau Fakta?",desc:"Betul atau tidak kenyataan tentang Akta 876 ini?",data:MITOS,n:8,mode:"pick",prompt:"Mitos atau fakta?",labels:["Fakta","Mitos"],scene:"Kenyataan",badge:["mitos",7]},
  kuiz:{grp:2,name:"Kuiz Kilat PRS",desc:"8 soalan objektif tentang konsep PRS.",data:KUIZ,mode:"quiz",badge:["kuiz",6]},
  bantu:{grp:2,name:"Bantu atau Rujuk?",desc:"Baca situasi, buat keputusan yang selamat.",data:BANTU,mode:"pick",prompt:"Apa tindakan PRS?",labels:["Saya boleh bantu","Rujuk guru kaunseling"],scene:"Situasi",badge:["bantu","all"]},
  dengar:{grp:2,name:"Pendengar Hebat",desc:"Tingkah laku mendengar: betul atau salah?",data:DENGAR,mode:"pick",prompt:"Adakah ini cara mendengar yang betul?",labels:["Betul","Salah"],scene:"Tingkah laku",badge:["dengar",7]}
 };
-const TOT={bukan:8,jenis:9,akta:10,susun:2,kuiz:8,bantu:6,dengar:8};
+const TOT={bukan:8,jenis:9,akta:10,susun:2,mitos:8,kuiz:8,bantu:6,dengar:8};
 
 
 let G=null,activeGame="bukan";
 function renderPicks(){
+  let num=0;
   [1,2].forEach(g=>{
-    $("#pick"+g).innerHTML=Object.entries(GAMES).filter(([,v])=>v.grp===g).map(([k,v],i)=>{
+    $("#pick"+g).innerHTML=Object.entries(GAMES).filter(([,v])=>v.grp===g).map(([k,v],i)=>{num++;
       const tot=TOT[k];
       const best=S.best[k]!=null?`<span class="best">Terbaik: ${S.best[k]}/${tot}</span>`:"";
-      return `<button data-game="${k}" aria-pressed="${k===activeGame}"><em>Permainan ${g===1?i+1:i+5}</em><strong>${v.name}</strong><span>${v.desc}</span>${best}</button>`}).join("");
+      return `<button data-game="${k}" aria-pressed="${k===activeGame}"><em>Permainan ${num}</em><strong>${v.name}</strong><span>${v.desc}</span>${best}</button>`}).join("");
   });
   $$(".gamepick button").forEach(b=>b.onclick=()=>start(b.dataset.game));
 }
@@ -1059,7 +1149,7 @@ $("#demoBtn").onclick=()=>beginSession({demo:true,nama:"Murid Cubaan",kelas:"-",
 
 /* ===== papan pemuka guru ===== */
 let GPIN="",GDATA=[],GSEL=null,gNew=false;
-const GAME_ORDER=["bukan","jenis","akta","susun","kuiz","bantu","dengar"];
+const GAME_ORDER=["bukan","jenis","akta","susun","mitos","kuiz","bantu","dengar"];
 $("#toGuru").onclick=async()=>{
   show("guru");$("#gMain").hidden=true;$("#gPinCard").hidden=false;$("#gErr").textContent="";$("#gPin").value="";$("#gPin2").value="";
   if(!HAS_GAS){$("#gErr").textContent="Papan pemuka hanya berfungsi selepas laman dipasang dalam Google Apps Script.";return}
@@ -1102,7 +1192,7 @@ function ago(ms){
   if(d<1/24)return "Baru tadi";if(d<1)return Math.floor(d*24)+" jam lalu";if(d<2)return "Semalam";
   return new Date(ms).toLocaleDateString("ms-MY",{day:"numeric",month:"short"});
 }
-function m1score(m){return (m.mods.includes("1")?1:0)+["bukan","jenis","akta","susun"].reduce((s,k)=>s+(m.best[k]||0)/TOT[k],0)}
+function m1score(m){return (m.mods.includes("1")?1:0)+["bukan","jenis","akta","susun","mitos"].reduce((s,k)=>s+(m.best[k]||0)/TOT[k],0)}
 function drawGuru(){
   const k=$("#fKelas").value,q=$("#fCari").value.trim().toLowerCase(),srt=$("#fSusun").value;
   let list=GDATA.filter(m=>(!k||m.kelas===k)&&(!q||m.nama.toLowerCase().includes(q)));
@@ -1118,7 +1208,7 @@ function drawGuru(){
     <td class="num"><b>${m.xp}</b></td><td>${LEVELS[lvlOf(m.xp)][1]}</td>
     <td><div class="mdots">${[1,2,3,4,5].map(i=>`<i class="${m.mods.includes(String(i))?"on":""}">${i}</i>`).join("")}</div></td>
     ${GAME_ORDER.map(g=>`<td class="num">${scoreCell(m,g)}</td>`).join("")}
-    <td>${ago(m.aktif)}</td></tr>`).join(""):`<tr><td colspan="13" class="empty-state">${GDATA.length?"Tiada murid sepadan dengan carian.":"Belum ada murid berdaftar. Kongsikan pautan laman ini kepada murid PRS."}</td></tr>`;
+    <td>${ago(m.aktif)}</td></tr>`).join(""):`<tr><td colspan="14" class="empty-state">${GDATA.length?"Tiada murid sepadan dengan carian.":"Belum ada murid berdaftar. Kongsikan pautan laman ini kepada murid PRS."}</td></tr>`;
   $$("#gBody tr[data-id]").forEach(tr=>{const f=()=>detail(GDATA.find(m=>m.id===tr.dataset.id));tr.onclick=f;tr.onkeydown=e=>{if(e.key==="Enter")f()}});
 }
 function lvlOf(xp){let i=0;LEVELS.forEach((l,k)=>{if(xp>=l[0])i=k});return i}
