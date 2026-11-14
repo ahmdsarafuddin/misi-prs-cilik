@@ -48,7 +48,7 @@ function doGet(e) {
 
 /* ---------- API untuk laman di GitHub Pages ---------- */
 
-var VERSI = '1.3';
+var VERSI = '1.4';
 
 // Hanya fungsi dalam senarai ini boleh dipanggil dari luar.
 var API_DIBENARKAN = {

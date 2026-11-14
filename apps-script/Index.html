@@ -239,10 +239,61 @@ details.mod summary::-webkit-details-marker{display:none}
 .btnrow .ghost{border:2px solid var(--line);background:transparent;border-radius:14px;padding:8px 18px;font-weight:800}
 
 /* badges */
-.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}
-.badge{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:8px;justify-items:center;text-align:center;align-content:start}
-.badge svg{width:64px;height:64px}
-.badge.locked{opacity:.5;filter:grayscale(1)}
+/* koleksi lencana */
+.bhead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between;margin-top:16px}
+.bhead h2{font-size:clamp(26px,4vw,32px)}
+.bcount{display:grid;gap:6px;min-width:220px;flex:0 1 320px}
+.bcount b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.bbar{height:12px;background:var(--line);border-radius:999px;overflow:hidden}
+.bbar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy),var(--plum),var(--coral),var(--sun));transition:width .6s}
+.bgroup{margin-top:22px;display:grid;gap:10px}
+.bgroup h3{font-size:20px;display:flex;gap:10px;align-items:center}
+.bgroup h3 small{font-family:var(--body);font-size:14px;color:var(--muted);font-weight:800;font-variant-numeric:tabular-nums}
+.badges{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:12px}
+@media (max-width:900px){.badges{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.badges{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.badge{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:14px 12px 16px;display:grid;gap:6px;justify-items:center;text-align:center;align-content:start;font:inherit;color:inherit;cursor:pointer;transition:transform .15s}
+.badge:hover{transform:translateY(-3px)}
+.badge .medal{width:92px;height:auto}
+.badge strong{font-family:var(--display);font-size:17px;line-height:1.2}
+.badge span{font-size:13px;color:var(--muted)}
+.badge .got{color:var(--ok);font-weight:800}
+.badge .try{font-size:12px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.05em}
+.badge.on{border-color:color-mix(in srgb,var(--sun) 60%,var(--line));background:linear-gradient(180deg,var(--sun-soft),var(--surface) 60%)}
+.medal .shine{animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{0%,60%{transform:translateX(-140px)}100%{transform:translateX(140px)}}
+
+/* saat kejayaan */
+.cel{position:fixed;inset:0;z-index:50;display:flex;background:color-mix(in srgb,#06121a 72%,transparent);
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow-y:auto}
+.cel canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.cel-card{position:relative;margin:auto;background:var(--surface);border-radius:28px;max-width:440px;width:100%;padding:22px 20px 20px;display:grid;gap:10px;justify-items:center;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+.cel-eye{font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral)}
+.cel-stage{position:relative;width:180px;height:180px;display:grid;place-items:center;margin-block:-6px -4px}
+.cel-rays{position:absolute;inset:0;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--sun) 55%,transparent) 0 12deg,transparent 12deg 30deg);
+  -webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%);animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cel-stage .medal{position:relative;width:132px;height:auto;animation:drop .9s .15s cubic-bezier(.2,1.5,.35,1) both}
+@keyframes drop{0%{transform:translateY(-60px) rotate(-25deg) scale(.4);opacity:0}100%{transform:none;opacity:1}}
+.cel h2{font-size:clamp(26px,6vw,34px);line-height:1.1}
+.cel p{max-width:36ch;color:var(--muted)}
+.cel-stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cel-stats div{background:var(--bg);border-radius:14px;padding:8px 14px;display:grid;line-height:1.2}
+.cel-stats b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.cel-stats span{font-size:12px;font-weight:700;color:var(--muted)}
+.cel-stats .xpbox b{color:var(--teal)}
+.cel-next{width:100%;background:var(--bg);border-radius:18px;padding:12px;display:grid;gap:8px}
+.cel-next .lbl{font-weight:800;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.cel-mini{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.cel-mini button{border:0;background:transparent;padding:2px;border-radius:12px;display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--muted);width:64px}
+.cel-mini button:hover{background:var(--surface)}
+.cel-mini .medal{width:46px;height:auto}
+.cel-actions{display:grid;gap:8px;width:100%}
+.cel-actions .ghostbtn{border:2px solid var(--line);background:transparent;border-radius:14px;padding:10px;font-weight:800}
+@media (prefers-reduced-motion:reduce){.cel-rays,.medal .shine{animation:none}.cel-card,.cel-stage .medal{animation:none}}
 .badge strong{font-family:var(--display);font-size:18px}
 .badge span{font-size:13px;color:var(--muted)}
 .reset{margin-top:20px;border:2px solid var(--line);background:transparent;color:var(--muted);border-radius:12px;padding:6px 14px;font-weight:700;font-size:14px}
@@ -385,7 +436,7 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
     <p class="info" id="demoNote" hidden>Mod cubaan: laman ini belum disambungkan ke Google Sheet, jadi kemajuan tidak disimpan.
       <button class="primary" id="demoBtn" type="button" style="margin-top:8px;width:100%">Cuba tanpa log masuk</button></p>
     <button class="linkbtn" id="toGuru" type="button">Saya guru: buka papan pemuka</button>
-    <p class="ver">Versi 1.3 · 15 Nov 2026</p>
+    <p class="ver">Versi 1.4 · 15 Nov 2026</p>
   </div>
 </div>
 
@@ -690,9 +741,11 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
 
 <!-- ============ LENCANA ============ -->
 <section id="lencana" hidden>
-  <h2 style="font-size:30px;margin-top:16px">Koleksi lencana</h2>
-  <p class="muted" style="margin-top:6px">Lencana dibuka apabila kamu menyelesaikan misi. Kumpul semuanya!</p>
-  <div class="badges" id="badges"></div>
+  <div class="bhead">
+    <div><h2>Koleksi lencana</h2><p class="muted" style="margin-top:4px">Selesaikan misi untuk membuka lencana. Tekan lencana untuk melihatnya.</p></div>
+    <div class="bcount"><b id="bCount">0 / 11 lencana</b><div class="bbar"><i id="bBar"></i></div></div>
+  </div>
+  <div id="badges"></div>
   <p class="note">Kemajuan kamu disimpan secara automatik dan boleh dilihat oleh guru PRS.</p>
 </section>
 </main>
@@ -745,6 +798,10 @@ tbody tr:hover,tbody tr:focus-visible{background:var(--bg);outline:none}
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="cel" id="cel" hidden role="dialog" aria-modal="true" aria-labelledby="celTitle">
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="cel-card" id="celCard"></div>
+</div>
 <script>
 (function(){
 "use strict";
@@ -816,6 +873,7 @@ function beginSession(ses){
   show("app");
 }
 function endSession(){
+  celQ.length=0;if(celOpen)nextCel();lastFocus=null;
   SES=null;S=fresh();dirty=false;clearTimeout(saveTimer);
   ["mPin","mPinBaru","mPinBaru2","dPin","dPin2"].forEach(id=>$("#"+id).value="");
   seg(false);$("#mErr").textContent="";show("gate");loadKelas();
@@ -833,8 +891,8 @@ function render(){
   $("#m1done").hidden=!S.mods.includes("1");
   renderBadges();renderPicks();
 }
-function addXP(n){const before=lvl();S.xp+=n;save();render();if(lvl()>before)toast("Naik tahap! Kamu kini "+LEVELS[lvl()][1]);}
-function badge(id){if(!S.badges.includes(id)){S.badges.push(id);save();renderBadges();const b=BADGES.find(x=>x.id===id);setTimeout(()=>toast("Lencana baharu: "+b.name),1000)}}
+function addXP(n){const before=lvl();S.xp+=n;save();render();if(lvl()>before)toast("Naik tahap! Kamu kini "+LEVELS[lvl()][1]);if(S.xp>=560)badge("bintang")}
+function badge(id,opt){if(!S.badges.includes(id)){S.badges.push(id);save();renderBadges();celebrate(id,Object.assign({fresh:true},opt||{}))}}
 
 /* tabs */
 $$("nav.tabs button").forEach(b=>b.onclick=()=>{
@@ -859,7 +917,7 @@ $$("#dots button").forEach(d=>d.onclick=()=>go(+d.dataset.i));
 $("#prev").onclick=()=>{if(cur>0){go(cur-1);$("#m1").scrollIntoView({block:"start"})}};
 $("#next").onclick=()=>{
   if(cur<steps.length-1){go(cur+1);$("#m1").scrollIntoView({block:"start"});return}
-  if(!S.mods.includes("1")){S.mods.push("1");addXP(40);badge("perisai");toast("+40 XP · Modul 1 selesai");go(cur)}
+  if(!S.mods.includes("1")){S.mods.push("1");addXP(40);go(cur);badge("perisai",{m1:true,xp:40})}
 };
 $$(".key").forEach(k=>k.onclick=()=>{
   if(k.classList.contains("open"))return;k.classList.add("open");
@@ -887,24 +945,122 @@ $$(".mod .read").forEach(btn=>btn.onclick=()=>{
 
 /* lencana */
 const BADGES=[
-  {id:"perisai",name:"Perisai Antibuli",desc:"Tamatkan pelajaran Modul 1",c:"--navy"},
-  {id:"detektif",name:"Detektif Buli",desc:"Skor 7/8 atau lebih dalam Buli atau Bukan?",c:"--coral"},
-  {id:"jenis",name:"Pengenal Jenis",desc:"Skor 7/9 atau lebih dalam Teka Jenis Buli",c:"--plum"},
-  {id:"akta",name:"Pakar Akta 876",desc:"Skor 8/10 atau lebih dalam Apa Kata Akta?",c:"--sun"},
-  {id:"peta",name:"Peta Tindakan",desc:"Susun kedua-dua laluan dengan betul",c:"--teal"},
-  {id:"mitos",name:"Pemburu Mitos",desc:"Skor 7/8 atau lebih dalam Mitos atau Fakta?",c:"--coral"},
-  {id:"ilmu",name:"Ulat Buku PRS",desc:"Baca Modul 2 hingga 5",c:"--teal"},
-  {id:"kuiz",name:"Otak Kilat",desc:"Skor 6/8 atau lebih dalam Kuiz Kilat",c:"--sun"},
-  {id:"bantu",name:"Penjaga Selamat",desc:"Semua betul dalam Bantu atau Rujuk",c:"--coral"},
-  {id:"dengar",name:"Telinga Emas",desc:"Skor 7/8 atau lebih dalam Pendengar Hebat",c:"--plum"},
-  {id:"bintang",name:"PRS Bintang",desc:"Capai 560 XP",c:"--navy"}
+  {id:"perisai",grp:1,name:"Perisai Antibuli",desc:"Tamatkan pelajaran Modul 1",c:"--navy",ic:"shield",how:"Kamu menamatkan semua 8 langkah Modul 1."},
+  {id:"detektif",grp:1,name:"Detektif Buli",desc:"Skor 7/8 atau lebih dalam Buli atau Bukan?",c:"--coral",ic:"search",g:"bukan",how:"Kamu bijak membezakan buli dan bukan buli."},
+  {id:"jenis",grp:1,name:"Pengenal Jenis",desc:"Skor 7/9 atau lebih dalam Teka Jenis Buli",c:"--plum",ic:"grid",g:"jenis",how:"Kamu kenal kelima-lima jenis buli."},
+  {id:"akta",grp:1,name:"Pakar Akta 876",desc:"Skor 8/10 atau lebih dalam Apa Kata Akta?",c:"--sun",ic:"scale",g:"akta",how:"Kamu faham isi penting Akta Antibuli 2026."},
+  {id:"peta",grp:1,name:"Peta Tindakan",desc:"Susun kedua-dua laluan dengan betul",c:"--teal",ic:"route",g:"susun",how:"Kamu tahu langkah PRS dan laluan aduan buli."},
+  {id:"mitos",grp:1,name:"Pemburu Mitos",desc:"Skor 7/8 atau lebih dalam Mitos atau Fakta?",c:"--coral",ic:"bulb",g:"mitos",how:"Kamu tidak mudah tertipu dengan mitos tentang buli."},
+  {id:"ilmu",grp:2,name:"Ulat Buku PRS",desc:"Baca Modul 2 hingga 5",c:"--teal",ic:"book",how:"Kamu membaca semua modul kemahiran PRS."},
+  {id:"kuiz",grp:2,name:"Otak Kilat",desc:"Skor 6/8 atau lebih dalam Kuiz Kilat",c:"--sun",ic:"bolt",g:"kuiz",how:"Kamu pantas menjawab soalan tentang PRS."},
+  {id:"bantu",grp:2,name:"Penjaga Selamat",desc:"Semua betul dalam Bantu atau Rujuk",c:"--coral",ic:"heart",g:"bantu",how:"Kamu tahu bila perlu merujuk kepada guru."},
+  {id:"dengar",grp:2,name:"Telinga Emas",desc:"Skor 7/8 atau lebih dalam Pendengar Hebat",c:"--plum",ic:"chat",g:"dengar",how:"Kamu pendengar yang hebat."},
+  {id:"bintang",grp:2,name:"PRS Bintang",desc:"Capai 560 XP",c:"--navy",ic:"star",how:"Kamu mengumpul 560 XP. Kamu PRS Bintang!"}
 ];
-function renderBadges(){
-  if(S.xp>=560&&!S.badges.includes("bintang")){S.badges.push("bintang");save()}
-  $("#badges").innerHTML=BADGES.map(b=>`<div class="badge ${S.badges.includes(b.id)?"":"locked"}">
-    <svg viewBox="0 0 64 64"><polygon points="32,3 40,22 61,24 45,38 50,59 32,48 14,59 19,38 3,24 24,22" fill="var(${b.c})"/><circle cx="32" cy="32" r="9" fill="var(--surface)"/></svg>
-    <strong>${b.name}</strong><span>${S.badges.includes(b.id)?"Dibuka":b.desc}</span></div>`).join("");
+const ICONS={
+  shield:'<path d="M12 2.5l7.5 3v5.8c0 4.7-3.2 8.6-7.5 10.2-4.3-1.6-7.5-5.5-7.5-10.2V5.5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+  grid:'<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
+  scale:'<path d="M12 3.5v17M5 7h14M8 20.5h8"/><path d="M7 7l-3 6.5h6zM17 7l-3 6.5h6z"/>',
+  route:'<circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8.2 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.8"/>',
+  bulb:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
+  book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>',
+  bolt:'<path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/>',
+  heart:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
+  chat:'<path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  lock:'<rect x="6" y="11" width="12" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>'
+};
+let medalN=0;
+function medal(b,on){
+  const id="md"+(++medalN),col=on?`var(${b.c})`:"var(--line)",ic=on?ICONS[b.ic]:ICONS.lock,ink=on?"#fff":"var(--muted)";
+  return `<svg class="medal" viewBox="0 0 120 140" aria-hidden="true">
+    <path d="M38 88 L26 136 L44 126 L54 138 L60 96Z" style="fill:${col};opacity:${on?.85:.6}"/>
+    <path d="M82 88 L94 136 L76 126 L66 138 L60 96Z" style="fill:${col};opacity:${on?.7:.5}"/>
+    <circle cx="60" cy="60" r="52" style="fill:${on?"var(--sun)":"var(--line)"}"/>
+    <circle cx="60" cy="60" r="46" style="fill:${col}"/>
+    <circle cx="60" cy="60" r="46" style="fill:#000;opacity:${on?.12:0}"/>
+    <circle cx="60" cy="60" r="38" style="fill:${col}"/>
+    ${on?`<clipPath id="${id}"><circle cx="60" cy="60" r="46"/></clipPath><g clip-path="url(#${id})"><rect class="shine" x="10" y="-20" width="26" height="160" transform="rotate(25 60 60)" style="fill:#fff;opacity:.22"/></g>`:""}
+    <g transform="translate(36 36) scale(2)" style="fill:none;stroke:${ink};stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">${ic}</g>
+  </svg>`;
 }
+function renderBadges(){
+  const got=BADGES.filter(b=>S.badges.includes(b.id)).length;
+  $("#bCount").textContent=got+" / "+BADGES.length+" lencana";
+  $("#bBar").style.width=(got/BADGES.length*100)+"%";
+  const grp=(g,title)=>{const list=BADGES.filter(b=>b.grp===g),n=list.filter(b=>S.badges.includes(b.id)).length;
+    return `<div class="bgroup"><h3>${title} <small>${n}/${list.length}</small></h3><div class="badges" style="--n:${list.length}">${list.map(b=>{const on=S.badges.includes(b.id);
+      return `<button class="badge ${on?"on":""}" data-b="${b.id}" aria-label="${b.name}${on?", dibuka":", belum dibuka"}">${medal(b,on)}<strong>${b.name}</strong>
+        ${on?`<span class="got">Dibuka ✓</span>`:`<span>${b.desc}</span>${b.g?`<span class="try">Cuba sekarang →</span>`:""}`}</button>`}).join("")}</div></div>`};
+  $("#badges").innerHTML=grp(1,"Misi Modul 1: Antibuli")+grp(2,"Kemahiran PRS");
+  $$("#badges .badge").forEach(el=>el.onclick=()=>{const b=BADGES.find(x=>x.id===el.dataset.b);
+    if(S.badges.includes(b.id))celebrate(b.id,{replay:true});else if(b.g)goGame(b.g);else if(b.id==="perisai")goLesson();else if(b.id==="ilmu")goLesson(".mods")});
+}
+function goTab(t){$$("nav.tabs button").forEach(x=>x.setAttribute("aria-selected",x.dataset.tab===t));["belajar","main","lencana"].forEach(id=>$("#"+id).hidden=id!==t);window.scrollTo({top:0})}
+function goGame(g){goTab("main");start(g);setTimeout(()=>$("#stage").scrollIntoView({block:"start"}),50)}
+function goLesson(sel){goTab("belajar");setTimeout(()=>(sel?$(sel):$("#m1")).scrollIntoView({block:"start"}),50)}
+
+/* ===== saat kejayaan ===== */
+const celQ=[];let celOpen=false,lastFocus=null;
+function celebrate(id,opt){celQ.push([id,opt||{}]);if(!celOpen)nextCel()}
+function nextCel(){
+  const it=celQ.shift();if(!it){celOpen=false;$("#cel").hidden=true;stopConfetti();if(lastFocus)lastFocus.focus({preventScroll:true});return}
+  celOpen=true;lastFocus=lastFocus||document.activeElement;
+  const [id,o]=it,b=BADGES.find(x=>x.id===id),first=(SES&&SES.nama||"").split(" ")[0];
+  const m1=BADGES.filter(x=>x.grp===1),m1got=m1.filter(x=>S.badges.includes(x.id)).length,m1left=m1.filter(x=>!S.badges.includes(x.id)&&x.g);
+  const all=m1got===m1.length&&b.grp===1;
+  let h="";
+  if(o.m1){
+    h=`<p class="cel-eye">Tahniah${first?", "+esc(first):""}!</p>
+      <div class="cel-stage"><div class="cel-rays"></div>${medal(b,true)}</div>
+      <h2 id="celTitle">Misi Modul 1 Selesai!</h2>
+      <p>Kamu kini tahu apa itu buli, isi Akta Antibuli 2026, dan cara PRS membantu rakan. Kamu menerima lencana <b style="color:var(--ink)">${b.name}</b>.</p>
+      <div class="cel-stats"><div><b>8/8</b><span>langkah</span></div><div class="xpbox"><b data-count="${o.xp||0}">+0</b><span>XP</span></div><div><b>${lvl()+1}</b><span>${LEVELS[lvl()][1]}</span></div></div>
+      <div class="cel-next"><div class="lbl"><span>Misi seterusnya: kumpul lencana Modul 1</span><span>${m1got}/${m1.length}</span></div>
+        <div class="bbar"><i style="width:${m1got/m1.length*100}%"></i></div>
+        <div class="cel-mini">${m1left.map(x=>`<button data-g="${x.g}" title="${x.desc}">${medal(x,false)}<span>${x.name}</span></button>`).join("")}</div></div>
+      <div class="cel-actions"><button class="primary" id="celGo">Mula misi: ${GAMES[m1left[0]?m1left[0].g:"bukan"].name}</button><button class="ghostbtn" id="celClose">Nanti dulu</button></div>`;
+  }else{
+    h=`<p class="cel-eye">${o.replay?"Lencana kamu":"Lencana baharu dibuka!"}</p>
+      <div class="cel-stage"><div class="cel-rays"></div>${medal(b,true)}</div>
+      <h2 id="celTitle">${b.name}</h2>
+      <p>${b.how}</p>
+      ${b.grp===1?`<div class="cel-next"><div class="lbl"><span>${all?"Semua lencana Modul 1 dikumpul! Kamu Pakar Antibuli.":"Lencana Modul 1"}</span><span>${m1got}/${m1.length}</span></div><div class="bbar"><i style="width:${m1got/m1.length*100}%"></i></div>
+        ${m1left.length?`<div class="cel-mini">${m1left.map(x=>`<button data-g="${x.g}" title="${x.desc}">${medal(x,false)}<span>${x.name}</span></button>`).join("")}</div>`:""}</div>`:""}
+      <div class="cel-actions">${!o.replay&&m1left.length&&b.grp===1?`<button class="primary" id="celGo">Misi seterusnya: ${GAMES[m1left[0].g].name}</button>`:`<button class="primary" id="celCol">Lihat koleksi lencana</button>`}<button class="ghostbtn" id="celClose">${o.replay?"Tutup":"Teruskan"}</button></div>`;
+  }
+  $("#celCard").innerHTML=h;$("#cel").hidden=false;
+  const card=$("#celCard");card.style.animation="none";void card.offsetWidth;card.style.animation="";
+  const nextG=(m1left[0]||{}).g||"bukan";
+  const go=$("#celGo");if(go)go.onclick=()=>{closeCel(true);goGame(nextG)};
+  const col=$("#celCol");if(col)col.onclick=()=>{closeCel(true);goTab("lencana")};
+  $("#celClose").onclick=()=>closeCel();
+  $$("#celCard .cel-mini button").forEach(x=>x.onclick=()=>{closeCel(true);goGame(x.dataset.g)});
+  const xb=$("#celCard [data-count]");if(xb){const tgt=+xb.dataset.count,t0=performance.now();const tick=t=>{const k=Math.min(1,(t-t0)/900);xb.textContent="+"+Math.round(tgt*k);if(k<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)}
+  ($("#celGo")||$("#celCol")||$("#celClose")).focus({preventScroll:true});
+  if(!o.replay)confetti();
+}
+function closeCel(all){if(all)celQ.length=0;nextCel()}
+document.addEventListener("keydown",e=>{if(celOpen&&e.key==="Escape")closeCel()});
+$("#cel").addEventListener("click",e=>{if(e.target.id==="cel")closeCel()});
+let confRAF=0;
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const c=$("#confetti"),x=c.getContext("2d");if(!x)return;
+  const W=c.width=innerWidth*devicePixelRatio,H=c.height=innerHeight*devicePixelRatio,dpr=devicePixelRatio;
+  const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const cols=["--teal","--sun","--coral","--plum","--navy"].map(tok);
+  const P=Array.from({length:160},(_,i)=>({x:W/2+(Math.random()-.5)*W*.2,y:H*.42,vx:(Math.random()-.5)*16*dpr,vy:(-Math.random()*16-6)*dpr,
+    w:(6+Math.random()*7)*dpr,h:(8+Math.random()*10)*dpr,r:Math.random()*6,vr:(Math.random()-.5)*.35,c:cols[i%cols.length],round:Math.random()<.3}));
+  const t0=performance.now();cancelAnimationFrame(confRAF);
+  const step=t=>{const age=t-t0;x.clearRect(0,0,W,H);
+    P.forEach(p=>{p.vy+=.42*dpr;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.globalAlpha=Math.max(0,1-age/3200);x.fillStyle=p.c;
+      if(p.round){x.beginPath();x.arc(0,0,p.w/2,0,7);x.fill()}else x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});
+    if(age<3300)confRAF=requestAnimationFrame(step);else x.clearRect(0,0,W,H)};
+  confRAF=requestAnimationFrame(step);
+}
+function stopConfetti(){cancelAnimationFrame(confRAF);const c=$("#confetti"),x=c.getContext&&c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height)}
 
 /* ===== data permainan ===== */
 
