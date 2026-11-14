@@ -85,16 +85,21 @@ Langkah ini boleh dibuat terus dalam pelayar menggunakan GitHub Codespaces, tanp
 1. Di halaman repo ini, klik **Code → Codespaces → Create codespace on main**.
 2. Dalam terminal di bahagian bawah, jalankan:
    ```
-   npx @google/clasp@2.4.2 login --no-localhost
+   npx -y @google/clasp@2.4.2 login
    ```
-3. Buka pautan yang dipaparkan, log masuk dengan Gmail yang memiliki projek Apps Script, kemudian klik **Allow**.
-4. Google akan memaparkan satu kod. Salin kod itu, tampal ke terminal, kemudian tekan Enter.
-5. Paparkan kelayakan dengan:
+3. Buka pautan `https://accounts.google.com/...` yang dipaparkan (Ctrl + klik), log masuk dengan Gmail yang memiliki projek Apps Script, kemudian klik **Allow**.
+4. Pelayar akan cuba membuka alamat `http://localhost:…` dan memaparkan *"This site can't be reached"*. Ini dijangka. **Salin seluruh alamat itu** daripada bar alamat pelayar.
+5. Kembali ke Codespace, klik **+** pada panel terminal untuk membuka terminal kedua, kemudian jalankan (tampal alamat tadi di antara tanda petik):
+   ```
+   curl "ALAMAT_LOCALHOST_TADI"
+   ```
+   Terminal pertama akan memaparkan *Authorization successful*.
+6. Paparkan kelayakan dengan:
    ```
    cat ~/.clasprc.json
    ```
    Salin **seluruh** teks yang dipaparkan, bermula dengan `{` dan berakhir dengan `}`.
-6. Padam codespace selepas siap, melalui **github.com/codespaces → ⋯ → Delete**.
+7. Padam codespace selepas siap, melalui **github.com/codespaces → ⋯ → Delete**.
 
 **Langkah 4: Simpan sebagai rahsia repo**
 
